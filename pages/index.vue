@@ -3,7 +3,7 @@
     <h1>应用列表</h1>
     <hr>
     <Row class="mt20">
-      <Col span="6" v-for="app in apps">
+      <Col span="6" v-for="app in apps" v-bind:key="app.name">
         <Card style="width:150px">
           <p slot="title" style="text-align: center; font-size: 14px;">
             {{ app.name }}
@@ -66,7 +66,7 @@ export default {
     async addApp() {
       await this.$axios.post('app', { name: this.appName });
       this.$Message.success('创建应用成功, 请上传应用完成剩余步骤。');
-      await this.$router.push('/upload');
+      await this.$router.push('/');
       this.isModalShow = false;
     },
     showAddAppModal() {
