@@ -47,6 +47,7 @@ export default {
       prepare: false,
       progress: 0,
       formData: {
+        email: 'stoneli88@126.com',
         fileName: 'weixin7017android1720_arm64.apk',
         downloadUrl: 'd6e30c110fc975d1b1f1790e7535f9ef',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjJlMWNjMDIxYmFmMDI5ZTRlODM0MzAiLCJpYXQiOjE1OTY4NTc1MzZ9.8wpNgDE8uWoiB0GuS87PGFa5jc2KQHkNqyUxlbtyfqM'
@@ -103,7 +104,7 @@ export default {
       req.send()
     },
     _downloadBySocket() {
-      const socket = io.connect(`http://127.0.0.1:4000/files?token=${this.formData.token}`);
+      const socket = io.connect(`http://127.0.0.1:4000/files?token=${this.formData.token}&email=${this.formData.email}`);
       let fileBlobs = [];
       let sizeDownloaded = 0;
       socket.on('error', error => {
