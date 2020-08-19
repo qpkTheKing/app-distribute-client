@@ -44,7 +44,7 @@ export default {
     const { query, $axios } = ctx
     const { data: appFiles } = await $axios.$get(`app/files?appId=${query.appId}`)
     const { data: me } = await $axios.$get(`me`)
-    const { data: appInfo } = await $axios.$get('app')
+    const { data: appInfo } = await $axios.$get(`app?appId=${query.appId}`)
 
     return { appFiles, appId: query.appId, me, appInfo: appInfo[0] }
   },
