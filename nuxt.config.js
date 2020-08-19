@@ -26,7 +26,8 @@ export default {
     ],
     script: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js', async: true, defer: true },
-      { src: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io-stream/0.9.1/socket.io-stream.js', async: true, defer: true }
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io-stream/0.9.1/socket.io-stream.js', async: true, defer: true },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js', async: false, defer: false }
     ],
   },
   /*

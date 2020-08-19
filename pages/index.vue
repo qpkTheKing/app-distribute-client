@@ -3,21 +3,31 @@
     <h1>应用列表</h1>
     <hr>
     <Row class="mt20">
-      <Col span="6" v-for="app in apps" v-bind:key="app.name">
-        <Card style="width:150px">
+      <Col span="8" v-for="app in apps" v-bind:key="app.name">
+        <Card style="width:251px">
           <p slot="title" style="text-align: center; font-size: 14px;">
             {{ app.name }}
           </p>
+          <div style="text-align: center;margin-bottom: 10px;">
+            <img :src="app.icon" alt="" width="100" v-if="app.icon && app.icon !== ''"/>
+            <template v-else>
+              <Icon type="md-appstore" style="font-size: 106px;color: rgb(45, 140, 240);"/>
+            </template>
+          </div>
           <p style="text-align: center">
-            <Button type="primary" @click.prevent="redirectToAppDetails(app.appId)">管理应用</Button>
+            <Button type="primary" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
+            <Button type="warning" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>
           </p>
         </Card>
       </Col>
       <Col span="6">
         <Card style="width:150px">
-          <p slot="title" style="text-align: center; font-size: 24px;">
-            <Icon type="ios-home"></Icon>
+          <p slot="title" style="text-align: center; font-size: 14px;">
+            添加应用
           </p>
+          <div style="text-align: center;">
+            <Icon type="ios-appstore" style="font-size: 116px;color: #2d8cf0"/>
+          </div>
           <p style="text-align: center">
             <Button type="success" @click.prevent="showAddAppModal">添加应用</Button>
           </p>
@@ -68,12 +78,13 @@ export default {
       this.$Message.success('创建应用成功, 请上传应用完成剩余步骤。');
       await this.$router.push('/');
       this.isModalShow = false;
+      this.$router.go(0)
     },
     showAddAppModal() {
       this.isModalShow = true;
     },
-    redirectToAppDetails(appId) {
-      this.$router.push(`/details?appId=${appId}`);
+    redirect(appId, where) {
+      this.$router.push(`/${where}?appId=${appId}`);
     },
     deleteApp() {}
   },
