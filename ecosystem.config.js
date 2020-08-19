@@ -4,7 +4,7 @@ module.exports = {
       name: 'AD-Server',
       exec_mode: 'cluster',
       instances: '1',
-      script: './node_modules/nuxt/bin/nuxt-ts.js',
+      script: './node_modules/.bin/nuxt-ts',
       args: 'start'
     }
   ]
