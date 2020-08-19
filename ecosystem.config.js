@@ -4,7 +4,8 @@ module.exports = {
       name: 'AD-Server',
       exec_mode: 'cluster',
       instances: '1',
-      script: 'yarn run start'
+      script: './node_modules/nuxt/bin/nuxt-ts.js',
+      args: 'start'
     }
   ]
 }
