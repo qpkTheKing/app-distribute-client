@@ -1,7 +1,11 @@
 export default {
+  server: {
+    port: 80, // default: 3000
+    host: '0.0.0.0' // default: localhost
+  },
   publicRuntimeConfig: {
     downloadServer: 'http://localhost:1080/files/',
-    client: 'http://localhost:3000'
+    client: 'http://localhost'
   },
   privateRuntimeConfig: {},
   /*
