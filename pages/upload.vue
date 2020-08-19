@@ -199,7 +199,7 @@ export default {
       let startTime, endTime
       let ctx = this
       uploader = new tus.Upload(file, {
-        endpoint: 'http://localhost:1080/files/',
+        endpoint: this.$config.downloadServer,
         chunkSize: 5 * 100 * 1024,
         overridePatchMethod: true,
         removeFingerprintOnSuccess: true,

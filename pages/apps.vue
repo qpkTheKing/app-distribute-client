@@ -31,7 +31,7 @@
       <template slot-scope="{ row, index }" slot="downloadUrl">
         <div :id="'downloadQRCode'+ '-' + row.hashId" style="display: none;" class="qrcodeWrapper"></div>
         <Button type="dashed" size="large" icon="md-qr-scanner"
-                v-on:click="qrCode(`http://localhost:3000/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
+                v-on:click="qrCode(`${$config.client}/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
       </template>
     </Table>
   </article>
@@ -72,36 +72,33 @@ export default {
       columns: [
         {
           title: '图标',
-          width: 80,
-          slot: 'icon'
+          slot: 'icon',
+          width: '60'
         },
         {
           title: '文件名',
           key: 'name',
-          tooltip: true,
-          width: 180
+          tooltip: true
         },
         {
           title: '浏览次数',
           align: 'center',
-          width: 90,
-          key: 'downloadTimes'
+          key: 'downloadTimes',
+          width: '90'
         },
         {
           title: '下载链接/二维码',
           align: 'center',
           slot: 'downloadUrl',
-          width: 210
         },
         {
           title: '状态',
-          width: 80,
-          slot: 'forDownload'
+          slot: 'forDownload',
+          width: '60'
         },
         {
           title: '操作',
           key: 'action',
-          width: 150,
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -115,7 +112,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.show(params.index)
+                    this.$Message.warning('正在实现中...');
                   }
                 }
               }, '查看'),
@@ -129,7 +126,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    this.$Message.warning('正在实现中...');
                   }
                 }
               }, '下载')
@@ -162,7 +159,7 @@ export default {
 <style scoped>
 .qrcodeWrapper {
   display: block;
-  width: 100%;
-  margin: 10px 20%;
+  width: 100px;
+  margin: 10px 60px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <div class="tfs-inner-layout">
+    <div class="tfs-download-inner-layout">
       <Nuxt/>
     </div>
   </div>
@@ -38,16 +38,12 @@ html {
   padding: 0;
 }
 
-.tfs-inner-layout {
-  width: 90%;
+.tfs-download-inner-layout {
+  width: 97%;
   margin: 30px auto 20px;
   background: #fff;
   border-radius: 6px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-}
-
-.tfs-inner-layout {
-  width: 97%
 }
 
 </style>

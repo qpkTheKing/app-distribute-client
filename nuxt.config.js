@@ -1,5 +1,9 @@
-
 export default {
+  publicRuntimeConfig: {
+    downloadServer: 'http://localhost:1080/files/',
+    client: 'http://localhost:3000'
+  },
+  privateRuntimeConfig: {},
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode

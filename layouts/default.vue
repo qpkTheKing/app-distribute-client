@@ -47,10 +47,10 @@ html {
 }
 
 .tfs-inner-layout {
-  width: 90%;
-  margin: 30px auto 20px;
+  width: 1024px;
+  margin: 20px auto;
   background: #fff;
-  border-radius: 6px;
+  border-radius: 5px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 

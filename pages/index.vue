@@ -2,9 +2,9 @@
   <article class="tfs-article">
     <h1>应用列表</h1>
     <hr>
-    <Row class="mt20">
-      <Col span="8" v-for="app in apps" v-bind:key="app.name">
-        <Card style="width:251px">
+    <Row class="mt20" :gutter="16">
+      <Col span="6" v-for="app in apps" v-bind:key="app.name">
+        <Card style="width:100%; margin-bottom: 15px">
           <p slot="title" style="text-align: center; font-size: 14px;">
             {{ app.name }}
           </p>
@@ -15,18 +15,18 @@
             </template>
           </div>
           <p style="text-align: center">
-            <Button type="primary" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
-            <Button type="warning" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>
+            <Button type="primary" size="small" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
+            <Button type="warning" size="small" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>
           </p>
         </Card>
       </Col>
-      <Col span="6">
-        <Card style="width:150px">
+      <Col span="4">
+        <Card style="width:100%;background-color: #f8f8f9">
           <p slot="title" style="text-align: center; font-size: 14px;">
             添加应用
           </p>
           <div style="text-align: center;">
-            <Icon type="ios-appstore" style="font-size: 116px;color: #2d8cf0"/>
+            <Icon type="ios-appstore" style="font-size: 108px;color: #2d8cf0"/>
           </div>
           <p style="text-align: center">
             <Button type="success" @click.prevent="showAddAppModal">添加应用</Button>
