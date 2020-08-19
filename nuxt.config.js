@@ -5,7 +5,8 @@ export default {
   },
   publicRuntimeConfig: {
     downloadServer: 'http://198.13.52.160:1080/files/',
-    client: 'http://198.13.52.160'
+    client: 'http://198.13.52.160',
+    socketServer: 'http://198.13.52.160:4000'
   },
   privateRuntimeConfig: {},
   /*
