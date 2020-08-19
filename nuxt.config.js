@@ -4,8 +4,8 @@ export default {
     host: '0.0.0.0' // default: localhost
   },
   publicRuntimeConfig: {
-    downloadServer: 'http://localhost:1080/files/',
-    client: 'http://localhost'
+    downloadServer: 'http://198.13.52.160:1080/files/',
+    client: 'http://198.13.52.160'
   },
   privateRuntimeConfig: {},
   /*
@@ -91,7 +91,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:4000/user'
+    baseURL: 'http://198.13.52.160:4000/user'
   },
   /*
   ** Build configuration
