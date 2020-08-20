@@ -148,7 +148,7 @@ export default {
           })
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(req.response)
-          link.download = this.formData.fileName
+          link.download = this.fileName
           link.click()
           this.downloading = false
           this.progress = 0
@@ -229,7 +229,7 @@ export default {
       } else if (this._browser().QQ && !this._browser().QQbrw) {
         this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
       } else {
-        this._downloadBySocket()
+        this._downloadByAJAX()
       }
     }
   },

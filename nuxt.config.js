@@ -4,7 +4,7 @@ export default {
     host: '0.0.0.0' // default: localhost
   },
   publicRuntimeConfig: {
-    downloadServer: 'http://198.13.52.160:1080/files/',
+    downloadServer: 'http://198.13.52.160:1080/files',
     client: 'http://198.13.52.160',
     socketServer: 'http://198.13.52.160:4000'
   },
