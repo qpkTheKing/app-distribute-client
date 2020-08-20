@@ -112,6 +112,27 @@ export default {
         link.click()
       }
     },
+    async _downloadByBrowser() {
+      this.downloading = true;
+      this.progress = 100;
+      const isQuotaFull = await this._isQuotaFull()
+      if (isQuotaFull) {
+        await this.$axios.$post('quota', {
+          usedQuota: this._toMb(this.size, 2),
+          email: this.email
+        })
+        this.$Notice.success({
+          top: 50,
+          title: '文件下载即将开始',
+          desc: '请关注浏览器下方是否弹出文件下载提醒.'
+        })
+        const link = document.createElement('a')
+        link.href = `${this.$config.downloadServer}/${this.fileHash}`;
+        link.download = this.fileName
+        link.click()
+        this.downloading = false;
+      }
+    },
     async _isQuotaFull() {
       const { data } = await this.$axios.$get(`quota?email=${this.email}`)
       if (parseFloat(data) < this._toMb(this.size, 2)) {
@@ -223,13 +244,13 @@ export default {
       if (this._browser().weiXin) {
         this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
       } else if (this._browser().QQbrw) {
-        this._downloadByAJAX()
+        this._downloadByBrowser()
       } else if (this._browser().ucWeb) {
-        this._downloadByAJAX()
+        this._downloadByBrowser()
       } else if (this._browser().QQ && !this._browser().QQbrw) {
         this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
       } else {
-        this._downloadByAJAX()
+        this._downloadBySocket()
       }
     }
   },
