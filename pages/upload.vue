@@ -116,7 +116,7 @@
           <Input v-model="appDescription" :rows="4" type="textarea" placeholder=""/>
         </Form-item>
         <Form-item label="下载模板:" v-if="fileUploaded">
-          <Input v-model="appDescription" type="text" placeholder="待实现" readonly disabled/>
+          <Input type="text" placeholder="待实现" readonly disabled/>
         </Form-item>
         <Form-item v-if="!fileDbId">
           <Button type="primary" @click="handleSubmit(appData)" :loading="loading" :disabled="!fileUploaded">提交
@@ -248,7 +248,7 @@ export default {
     }
   },
   mounted() {
-    this.appDescription = this.fileData.description;
+    this.appDescription = this.fileData ? this.fileData.description : '';
   },
   methods: {
     _formatBytes: (bytes, decimals = 2) => {
@@ -279,23 +279,17 @@ export default {
           downloadUrl: `${this.$config.downloadServer}/${this.formData.fileFingerPrint}`,
           forDownload: this.forDownload === 'T' ? 'TRUE' : 'FALSE'
         }
-        if (this.fileUploaded) {
-          await this.$axios.$post('app/file', {
-            pkgMeta: {
-              version: this.appMetaData.version,
-              applicationId: this.appMetaData.applicationId,
-              versionCode: this.appMetaData.versionCode,
-              sha1: this.appMetaData.sha1,
-              icon: this.appMetaData.icon
-            },
-            fileDbId: this.fileDbId,
-            ...commonPayload
-          })
-        } else {
-          await this.$axios.$post('app/file', {
-            ...commonPayload
-          })
-        }
+        await this.$axios.$post('app/file', {
+          pkgMeta: {
+            version: this.appMetaData.version,
+            applicationId: this.appMetaData.applicationId,
+            versionCode: this.appMetaData.versionCode,
+            sha1: this.appMetaData.sha1,
+            icon: this.appMetaData.icon
+          },
+          fileDbId: this.fileDbId,
+          ...commonPayload
+        })
         this.loading = false
         this.$Notice.success({
           title: '应用提交成功，即将跳转应用列表页面.'
