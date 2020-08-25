@@ -101,6 +101,7 @@ export default {
           key: 'action',
           align: 'center',
           render: (h, params) => {
+            const { row } = params;
             return h('div', [
               h('Button', {
                 props: {
@@ -118,11 +119,23 @@ export default {
               }, '查看'),
               h('Button', {
                 props: {
-                  type: 'info',
+                  type: 'warning',
                   size: 'small'
                 },
                 style: {
-                  marginLeft: '5px'
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    const { _id } = row;
+                    this.$router.push(`upload?appId=${this.appId}&fileId=${_id}`);
+                  }
+                }
+              }, '更新'),
+              h('Button', {
+                props: {
+                  type: 'info',
+                  size: 'small'
                 },
                 on: {
                   click: () => {
