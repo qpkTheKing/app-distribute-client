@@ -288,11 +288,11 @@ export default {
       if (this._browser().weiXin) {
         this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
       } else if (this._browser().QQbrw) {
-        this._downloadByBrowser()
-        // this._downloadByAJAX()
+        // this._downloadByBrowser()
+        this._downloadByAJAX()
       } else if (this._browser().ucWeb) {
-        this._downloadByBrowser()
-        // this._downloadByAJAX()
+        // this._downloadByBrowser()
+        this._downloadByAJAX()
       } else if (this._browser().QQ && !this._browser().QQbrw) {
         this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
       } else {
