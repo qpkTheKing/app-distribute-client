@@ -4,6 +4,8 @@ export default {
     host: '0.0.0.0' // default: localhost
   },
   publicRuntimeConfig: {
+    // downloadServer: 'http://localhost:1080/files',
+    // client: 'http://192.168.254.100',
     downloadServer: 'http://198.13.52.160:1080/files',
     client: 'http://198.13.52.160',
     socketServer: 'http://198.13.52.160:4000'
@@ -93,6 +95,7 @@ export default {
   */
   axios: {
     baseURL: 'http://198.13.52.160:4000/user'
+    // baseURL: 'http://localhost:4000/user'
   },
   /*
   ** Build configuration

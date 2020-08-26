@@ -3,6 +3,19 @@
     <Navbar/>
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
+      <div class="tfs-layout-breadcrumb">
+        <Breadcrumb>
+          <BreadcrumbItem to="/">
+            <Icon type="ios-home-outline" style="font-size: 24px;"></Icon> Home
+          </BreadcrumbItem>
+          <BreadcrumbItem to="/upload" v-if="current === 'upload'">
+            <Icon type="md-add" style="font-size: 24px;" /> 新增或编辑
+          </BreadcrumbItem>
+          <BreadcrumbItem to="/apps" v-if="current === 'apps'">
+            <Icon type="ios-apps-outline" style="font-size: 24px;" /> 我的分发应用
+          </BreadcrumbItem>
+        </Breadcrumb>
+      </div>
     </div>
     <div class="tfs-inner-layout">
       <Nuxt/>
@@ -12,10 +25,16 @@
 
 <script>
 import Navbar from '~/components/NavBar'
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     Navbar
+  },
+  computed: {
+    ...mapGetters({
+      current: 'global/currentRoute'
+    }),
   }
 }
 </script>
@@ -57,7 +76,7 @@ html {
 .tfs-layout-logo {
   width: 270px;
   height: 30px;
-  background: #5b6270;
+  background: #2db7f5;
   border-radius: 3px;
   float: left;
   position: relative;
@@ -119,6 +138,15 @@ html {
 
 .mt20 {
   margin-top: 20px;
+}
+
+.tfs-layout-breadcrumb {
+  float: right;
+  position: relative;
+  top: 15px;
+  right: 20px;
+  color: #fff;
+  line-height: 30px;
 }
 
 </style>

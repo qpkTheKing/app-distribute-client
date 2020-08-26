@@ -30,8 +30,10 @@
       </template>
       <template slot-scope="{ row, index }" slot="downloadUrl">
         <div :id="'downloadQRCode'+ '-' + row.hashId" style="display: none;" class="qrcodeWrapper"></div>
-        <Button type="dashed" size="large" icon="md-qr-scanner"
-                v-on:click="qrCode(`${$config.client}/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
+        <Button-group size="large">
+          <Button icon="md-link" v-on:click="go(`${$config.client}/download?file=${row.hashId}`)"></Button>
+          <Button icon="md-qr-scanner" v-on:click="qrCode(`${$config.client}/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
+        </Button-group>
       </template>
     </Table>
   </article>
@@ -150,6 +152,9 @@ export default {
     }
   },
   methods: {
+    go(url) {
+      window.open(url, '_blank');
+    },
     qrCode(url, elementId) {
       const element = document.getElementById(elementId);
       this.$nextTick(() => {

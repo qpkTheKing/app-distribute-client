@@ -4,14 +4,14 @@
     <hr>
     <Row class="mt20" :gutter="16">
       <Col span="6" v-for="app in apps" v-bind:key="app.name">
-        <Card style="width:100%; margin-bottom: 15px">
+        <Card style="width:100%; margin-bottom: 15px; cursor: pointer">
           <p slot="title" style="text-align: center; font-size: 14px;">
             {{ app.name }}
           </p>
           <div style="text-align: center;margin-bottom: 10px;">
             <img :src="app.icon" alt="" width="100" v-if="app.icon && app.icon !== ''"/>
             <template v-else>
-              <Icon type="md-appstore" style="font-size: 106px;color: rgb(45, 140, 240);"/>
+              <Icon type="md-add" style="font-size: 106px;color: #515a6e;"/>
             </template>
           </div>
           <p style="text-align: center">
@@ -21,12 +21,12 @@
         </Card>
       </Col>
       <Col span="4">
-        <Card style="width:100%;background-color: #f8f8f9">
+        <Card style="width:100%;background-color: #f8f8f9;cursor: pointer">
           <p slot="title" style="text-align: center; font-size: 14px;">
             添加应用
           </p>
           <div style="text-align: center;">
-            <Icon type="ios-appstore" style="font-size: 108px;color: #2d8cf0"/>
+            <Icon type="ios-add-circle-outline" style="font-size: 106px;color: #515a6e;"/>
           </div>
           <p style="text-align: center">
             <Button type="success" @click.prevent="showAddAppModal">添加应用</Button>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   async asyncData(ctx) {
@@ -63,7 +63,7 @@ export default {
   },
   middleware: 'auth',
   computed: {
-    ...mapGetters(['loggedInUser'])
+    ...mapGetters(['loggedInUser']),
   },
   data() {
     return {
@@ -73,6 +73,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      changeRoute: 'global/changeRoute'
+    }),
     async addApp() {
       await this.$axios.post('app', { name: this.appName });
       this.$Message.success('创建应用成功, 请上传应用完成剩余步骤。');
@@ -84,6 +87,7 @@ export default {
       this.isModalShow = true;
     },
     redirect(appId, where) {
+      this.changeRoute(where);
       this.$router.push(`/${where}?appId=${appId}`);
     },
     deleteApp() {}
