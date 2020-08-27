@@ -11,7 +11,7 @@
           <div style="text-align: center;margin-bottom: 10px;">
             <img :src="app.icon" alt="" width="100" v-if="app.icon && app.icon !== ''"/>
             <template v-else>
-              <Icon type="md-add" style="font-size: 106px;color: #515a6e;"/>
+              <Icon type="ios-appstore-outline" style="font-size: 106px;color: #515a6e;"/>
             </template>
           </div>
           <p style="text-align: center">
