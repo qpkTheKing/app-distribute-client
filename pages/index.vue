@@ -74,7 +74,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      changeRoute: 'global/changeRoute'
+      changeRoute: 'global/changeRoute',
+      changeAppId: 'global/changeAppId'
     }),
     async addApp() {
       await this.$axios.post('app', { name: this.appName });
@@ -88,6 +89,7 @@ export default {
     },
     redirect(appId, where) {
       this.changeRoute(where);
+      this.changeAppId(appId);
       this.$router.push(`/${where}?appId=${appId}`);
     },
     deleteApp() {}

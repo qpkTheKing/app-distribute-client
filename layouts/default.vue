@@ -8,11 +8,14 @@
           <BreadcrumbItem to="/">
             <Icon type="ios-home-outline" style="font-size: 24px;"></Icon> Home
           </BreadcrumbItem>
-          <BreadcrumbItem to="/upload" v-if="current === 'upload'">
-            <Icon type="md-add" style="font-size: 24px;" /> 新增或编辑
-          </BreadcrumbItem>
-          <BreadcrumbItem to="/apps" v-if="current === 'apps'">
+          <BreadcrumbItem v-if="current === 'apps'">
             <Icon type="ios-apps-outline" style="font-size: 24px;" /> 我的分发应用
+          </BreadcrumbItem>
+          <BreadcrumbItem :to="`/apps?appId=${currentAppId}`" v-if="current !== 'apps' && current !== ''">
+            <Icon type="ios-apps-outline" style="font-size: 24px;" /> 我的分发应用
+          </BreadcrumbItem>
+          <BreadcrumbItem v-if="current === 'upload'">
+            <Icon type="md-add" style="font-size: 24px;" /> 新增或编辑
           </BreadcrumbItem>
         </Breadcrumb>
       </div>
@@ -25,15 +28,45 @@
 
 <script>
 import Navbar from '~/components/NavBar'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   components: {
     Navbar
   },
+  watch:{
+    $route (to, from){
+      const { name, query } = to;
+      switch (name) {
+        case 'apps':
+          this.changeAppId(query.appId);
+          this.changeRoute(name)
+          break;
+        case 'upload':
+          this.changeFileId(query.fileId);
+          this.changeRoute(name);
+          break;
+        case 'register':
+        case 'login':
+          // do nothing.
+          break;
+        default:
+          this.changeRoute('');
+      }
+    }
+  },
+  methods: {
+    ...mapMutations({
+      changeRoute: 'global/changeRoute',
+      changeAppId: 'global/changeAppId',
+      changeFileId: 'global/changeFileId'
+    })
+  },
   computed: {
     ...mapGetters({
-      current: 'global/currentRoute'
+      current: 'global/currentRoute',
+      currentAppId: 'global/currentAppId',
+      currentFileId: 'global/currentFileId'
     }),
   }
 }

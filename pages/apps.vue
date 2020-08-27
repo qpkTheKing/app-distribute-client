@@ -1,6 +1,13 @@
 <template>
   <article class="tfs-article">
-    <h1>我的分发应用</h1>
+    <Row>
+      <Col span="4">
+        <h1>我的分发应用</h1>
+      </Col>
+      <Col span="20" style="text-align: right;">
+        <Button type="primary" v-on:click="navToUpload">上传新包</Button>
+      </Col>
+    </Row>
     <hr/>
     <Row style="margin-top: 10px;">
       <Col span="4">
@@ -39,7 +46,7 @@
   </article>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   async asyncData(ctx) {
@@ -130,6 +137,8 @@ export default {
                 on: {
                   click: () => {
                     const { _id } = row;
+                    this.changeFileId(_id);
+                    this.changeRoute('upload')
                     this.$router.push(`upload?appId=${this.appId}&fileId=${_id}`);
                   }
                 }
@@ -152,8 +161,15 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      changeRoute: 'global/changeRoute',
+      changeFileId: 'global/changeFileId'
+    }),
     go(url) {
       window.open(url, '_blank');
+    },
+    navToUpload() {
+      this.$router.push(`/upload?appId=${this.appId}`);
     },
     qrCode(url, elementId) {
       const element = document.getElementById(elementId);
