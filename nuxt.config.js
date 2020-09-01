@@ -53,7 +53,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/iview'
+    '@/plugins/iview',
+    '@/plugins/clipboard2'
   ],
   /*
   ** Auto import components

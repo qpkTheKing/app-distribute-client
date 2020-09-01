@@ -1,9 +1,46 @@
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.1s;
 }
 
 .page-enter,
 .page-leave-active {
   opacity: 0;
 }
+
+@media (max-width: 767px) {
+  .hidden-sm {
+    display: none;
+  }
+
+  .sm-text-center {
+    text-align: center;
+  }
+
+  .tCenter-sm {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .tfs-download-inner-layout {
+    width: 65% !important;
+  }
+
+  .hidden-md {
+    display: none !important;
+  }
+
+  .hidden-sm {
+    display: block;
+  }
+
+  .sm-text-center {
+    text-align: initial;
+  }
+
+  .tLeft-md {
+    text-align: left;
+  }
+}
+

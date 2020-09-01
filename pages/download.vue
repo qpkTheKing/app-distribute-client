@@ -1,50 +1,49 @@
 <template>
   <article class="tfs-article">
-    <div v-if="isMobile">
-      <Row>
-        <Col span="8">
-          <img :src="icon" alt="" width="100"/>
-        </Col>
-        <Col span="16">
-          <div style="font-size: 24px;font-weight: bolder;margin-bottom: 10px;">{{ appName }}</div>
-          <div>{{ appName }} 通讯</div>
-        </Col>
-      </Row>
-      <Row style="margin: 15px 31%;text-align: center;" v-if="downloading">
-        <Col span="8">
-          <i-circle :percent="progress">
-            <span class="demo-Circle-inner" style="font-size:24px">{{ progress }}</span>
-          </i-circle>
-        </Col>
-      </Row>
-      <Row style="margin-top: 15px;margin-bottom: 15px;">
-        <Col span="24">
-          <Button
-            size="large"
-            icon="ios-download-outline"
-            type="primary"
-            long
-            style="height: 50px;"
-            :loading="downloading"
-            v-on:click="handleDownload"
-          >
-            下载
-          </Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col span="24">
-          <p style="font-size: 16px;">
-            {{ description }}
-          </p>
-        </Col>
-      </Row>
-    </div>
-    <div v-else class="tfs-article-center">
-      <p style="font-size: 14px">请用手机扫描二维码下载</p>
-      <h1>{{ appName }}</h1>
-      <div id="tfs-download-qrcode"></div>
-    </div>
+    <Row style="background: aliceblue; border-radius: .5rem;" class="tfs-download-info-resp">
+      <Col :xs="24" :sm="24" :md="12" :lg="12" class="sm-text-center" style="margin-bottom: 20px">
+        <Row>
+          <Col :xs="24" :sm="24" :md="8" :lg="8">
+            <img :src="icon" alt="" width="100"/>
+          </Col>
+          <Row style="margin-top: 15px;margin-bottom: 15px;">
+            <Col span="24" class="tLeft-md tCenter-sm">
+              <h1 class="hidden-sm" style="font-size: 16px;">{{ appName }}</h1>
+              <Button
+                type="success"
+                style="width: 100px;height: 30px;margin-top: 10px"
+                :loading="downloading"
+                v-on:click="handleDownload"
+              >
+                <Icon style="font-size: 14px;" type="md-cloud-download" />
+                下载
+              </Button>
+            </Col>
+          </Row>
+          <Col :xs="24" :sm="24" :md="16" :lg="16">
+            <div style="margin-bottom: 5px;">版本: 2.1.2</div>
+            <div>最后更新: 2020-08-20 16:51 PM</div>
+          </Col>
+        </Row>
+      </Col>
+      <Divider style="margin: 20px 0;" class="hidden-md">或者使用手机扫描下面的二维码安装</Divider>
+      <Col :xs="24" :sm="24" :md="12" :lg="12">
+        <p style="font-size: 14px" class="hidden-sm">或请用手机扫描下面二维码下载</p>
+        <div id="tfs-download-qrcode" class="tLeft-md tCenter-sm"></div>
+      </Col>
+    </Row>
+    <Divider style="margin: 20px 0;">应用截图</Divider>
+    <Row>
+      图片栏
+    </Row>
+    <Divider style="margin: 20px 0;">应用描述</Divider>
+    <Row>
+      <Col span="24">
+        <p style="font-size: 16px;">
+          {{ description }}
+        </p>
+      </Col>
+    </Row>
   </article>
 </template>
 
@@ -68,13 +67,15 @@ export default {
     }
   },
   mounted() {
-    // 增加对当前浏览器的判断
     this.isMobile = this._mobileCheck();
-    if (this._mobileCheck()) {
-
-    } else {
-      const downloadUrl = `${this.$config.client}/download?file=${this.fileHash}`
-      this.qrCode(downloadUrl, 'tfs-download-qrcode')
+    const downloadUrl = `${this.$config.client}/download?file=${this.fileHash}`
+    let mqlSM = window.matchMedia('(max-width: 767px)');
+    let mqlMD = window.matchMedia('(min-width: 767px)');
+    if (mqlSM.matches) {
+      this.qrCode(downloadUrl, 'tfs-download-qrcode', 100)
+    }
+    if (mqlMD.matches) {
+      this.qrCode(downloadUrl, 'tfs-download-qrcode', 180)
     }
   },
   methods: {
@@ -301,15 +302,16 @@ export default {
         this._downloadBySocket()
       }
     },
-    qrCode(url, elementId) {
+    qrCode(url, elementId, size) {
       const element = document.getElementById(elementId)
       this.$nextTick(() => {
         // element.style.display = element.style.display === 'none' ? 'block' : 'none'
         element.innerHTML = ''
         new window.QRCode(elementId, {
+          render: "table",
           text: url,
-          width: 300,
-          height: 300,
+          width: size,
+          height: size,
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H
@@ -336,6 +338,31 @@ p {
   margin: 0 auto;
   border-radius: 5px;
   border: 1px solid #dedede;
+}
+
+@media (max-width: 767px) {
+  #tfs-download-qrcode {
+    width: 100px;
+    height: 100px;
+  }
+  .tfs-download-info-resp {
+    padding: 1rem 0;
+  }
+}
+
+@media (min-width: 768px) {
+  #tfs-download-qrcode {
+    width: 100px;
+    height: 100px;
+    text-align: left;
+    margin: 10px 0;
+  }
+
+  .tfs-download-info-resp {
+    width: 47rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+  }
 }
 
 .tfs-article-center {

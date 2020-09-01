@@ -36,11 +36,14 @@
         <template v-else>未启用</template>
       </template>
       <template slot-scope="{ row, index }" slot="downloadUrl">
-        <div :id="'downloadQRCode'+ '-' + row.hashId" style="display: none;" class="qrcodeWrapper"></div>
-        <Button-group size="large">
-          <Button icon="md-link" v-on:click="go(`${$config.client}/download?file=${row.hashId}`)"></Button>
-          <Button icon="md-qr-scanner" v-on:click="qrCode(`${$config.client}/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
-        </Button-group>
+        <div :id="`downloadQRCode-${row.hashId}`" style="display: none;" class="qrcodeWrapper"></div>
+        <tooltip placement="top" max-width="500" transfer :content="`${$config.client}/download?file=${row.hashId}`">
+          <Button size="large" icon="md-link" v-clipboard:copy="`${$config.client}/download?file=${row.hashId}`"
+                  v-clipboard:success="onCopy"
+                  v-clipboard:error="onError"></Button>
+        </tooltip>
+        <Button size="large" icon="md-qr-scanner"
+                v-on:click="qrCode(`${$config.client}/download?file=${row.hashId}`, `downloadQRCode-${row.hashId}`)"></Button>
       </template>
     </Table>
   </article>
@@ -65,6 +68,9 @@ export default {
     return {
       platform: '',
       keyword: '',
+      clipboard: {
+        message: '复制成功'
+      },
       allPlatform: [
         {
           value: 'Android',
@@ -98,7 +104,7 @@ export default {
         {
           title: '下载链接/二维码',
           align: 'center',
-          slot: 'downloadUrl',
+          slot: 'downloadUrl'
         },
         {
           title: '状态',
@@ -110,11 +116,11 @@ export default {
           key: 'action',
           align: 'center',
           render: (h, params) => {
-            const { row } = params;
+            const { row } = params
             return h('div', [
               h('Button', {
                 props: {
-                  type: 'primary',
+                  type: 'success',
                   size: 'small'
                 },
                 style: {
@@ -122,10 +128,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$Message.warning('正在实现中...');
+                    window.open(`${this.$config.client}/download?file=${row.hashId}`, '_blank')
                   }
                 }
-              }, '查看'),
+              }, '预览'),
               h('Button', {
                 props: {
                   type: 'warning',
@@ -136,10 +142,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    const { _id } = row;
-                    this.changeFileId(_id);
+                    const { _id } = row
+                    this.changeFileId(_id)
                     this.changeRoute('upload')
-                    this.$router.push(`upload?appId=${this.appId}&fileId=${_id}`);
+                    this.$router.push(`upload?appId=${this.appId}&fileId=${_id}`)
                   }
                 }
               }, '更新'),
@@ -150,7 +156,8 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$Message.warning('正在实现中...');
+                    const { hashId } = row
+                    this._download(hashId)
                   }
                 }
               }, '下载')
@@ -161,21 +168,35 @@ export default {
     }
   },
   methods: {
+    _download(fileHash) {
+      this.$Notice.success({
+        top: 50,
+        title: '文件下载即将开始',
+        desc: '请关注浏览器下方是否弹出文件下载提醒.'
+      })
+      const link = document.createElement('a')
+      link.href = `${this.$config.downloadServer}/${fileHash}`
+      link.download = this.fileName
+      link.click()
+    },
     ...mapMutations({
       changeRoute: 'global/changeRoute',
       changeFileId: 'global/changeFileId'
     }),
-    go(url) {
-      window.open(url, '_blank');
+    onCopy: function(e) {
+      this.$Message.success(`链接地址已经成功复制到剪切板!`)
+    },
+    onError: function(e) {
+      this.$Message.error(`复制到剪切板出现问题，请检查浏览器设置.`)
     },
     navToUpload() {
-      this.$router.push(`/upload?appId=${this.appId}`);
+      this.$router.push(`/upload?appId=${this.appId}`)
     },
     qrCode(url, elementId) {
-      const element = document.getElementById(elementId);
+      const element = document.getElementById(elementId)
       this.$nextTick(() => {
-        element.style.display = element.style.display === 'none' ? 'block' : 'none';
-        element.innerHTML = '';
+        element.style.display = element.style.display === 'none' ? 'block' : 'none'
+        element.innerHTML = ''
         new window.QRCode(elementId, {
           text: url,
           width: 100,
@@ -183,7 +204,7 @@ export default {
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H
-        });
+        })
       })
     }
   },

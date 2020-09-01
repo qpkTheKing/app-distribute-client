@@ -15,8 +15,8 @@
             </template>
           </div>
           <p style="text-align: center">
-            <Button type="primary" size="small" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
-            <Button type="warning" size="small" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>
+            <Button type="primary" size="large" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
+<!--            <Button type="warning" size="small" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>-->
           </p>
         </Card>
       </Col>
@@ -26,10 +26,10 @@
             添加应用
           </p>
           <div style="text-align: center;">
-            <Icon type="ios-add-circle-outline" style="font-size: 106px;color: #515a6e;"/>
+            <Icon type="ios-add-circle-outline" style="font-size: 115px;color: #515a6e;"/>
           </div>
           <p style="text-align: center">
-            <Button type="success" @click.prevent="showAddAppModal">添加应用</Button>
+            <Button type="success" size="large" @click.prevent="showAddAppModal">添加应用</Button>
           </p>
         </Card>
       </Col>
