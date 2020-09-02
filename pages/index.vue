@@ -25,7 +25,7 @@
           <p slot="title" style="text-align: center; font-size: 14px;">
             添加应用
           </p>
-          <div style="text-align: center;">
+          <div style="text-align: center;" @click.prevent="showAddAppModal">
             <Icon type="ios-add-circle-outline" style="font-size: 115px;color: #515a6e;"/>
           </div>
           <p style="text-align: center">
