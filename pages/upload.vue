@@ -93,7 +93,7 @@
             <Radio label="F">否</Radio>
           </Radio-group>
         </Form-item>
-        <Form-item label="应用截图:" v-if="fileUploaded">
+        <Form-item label="应用截图:" v-if="false">
           <Upload
             ref="upload"
             :show-upload-list="false"
@@ -133,7 +133,7 @@
             <Radio label="F">否</Radio>
           </Radio-group>
         </Form-item>
-        <Form-item label="应用截图:">
+        <Form-item label="应用截图:" v-if="false">
           <Upload
             ref="upload"
             :show-upload-list="false"
@@ -237,6 +237,7 @@ export default {
       forDownload: 'T',
       appMetaData: {},
       defaultList: [],
+      uploadedList: [],
       appDescription: '',
       formData: {
         phone: 'android',
@@ -317,7 +318,7 @@ export default {
       this.formData.uploadProgress = 0
       // todo: 此处需要添加服务器端接口，删除服务器端文件。
     },
-    handleImgBeforeUpload() {
+    handleImgBeforeUpload(files) {
       return false
     },
     handleFileUpload(file) {

@@ -15,11 +15,11 @@
       <Form-item label="确认密码" prop="passwdCheck">
         <Input type="password" v-model="formData.passwdCheck" placeholder="请再次输入密码"></Input>
       </Form-item>
-      <Alert type="warning">在注册的时设置流量是出于测试目的，简化掉用户中心，直接测试流量余额。</Alert>
-      <Form-item label="流量额度">
-        <Slider v-model="formData.quota" :step="10" :min="0" :max="500" :tip-format="format" show-stops
-                show-input></Slider>
-      </Form-item>
+<!--      <Alert type="warning">在注册的时设置流量是出于测试目的，简化掉用户中心，直接测试流量余额。</Alert>-->
+<!--      <Form-item label="流量额度">-->
+<!--        <Slider v-model="formData.quota" :step="10" :min="0" :max="500" :tip-format="format" show-stops-->
+<!--                show-input></Slider>-->
+<!--      </Form-item>-->
       <Form-item>
         <Button type="primary" @click="handleSubmit('formData')" :loading="loading">提交</Button>
         <Button @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
@@ -91,7 +91,7 @@ export default {
               name: this.formData.name,
               email: this.formData.email,
               password: this.formData.password,
-              quota: this.formData.quota
+              quota: 50
             });
             this.$Message.success("注册成功.");
             await this.$auth.loginWith('local', {

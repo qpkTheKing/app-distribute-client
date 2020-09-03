@@ -1,7 +1,8 @@
 export const state = () => ({
   currentRoute: '',
   appId: '',
-  fileId: ''
+  fileId: '',
+  currentRole: ''
 });
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   changeFileId(state, fileId) {
     state.fileId = fileId;
+  },
+  setCurrentRole(state, role) {
+    state.currentRole = role;
   }
 };
 
@@ -25,5 +29,8 @@ export const getters = {
   },
   currentFileId(state) {
     return state.fileId;
+  },
+  role(state) {
+    return state.currentRole;
   }
 }

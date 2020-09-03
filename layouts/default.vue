@@ -1,6 +1,6 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <Navbar/>
+    <Navbar :role="role"/>
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
       <div class="tfs-layout-breadcrumb">
@@ -34,6 +34,17 @@ export default {
   components: {
     Navbar
   },
+  async mounted() {
+    const { data: me } = await this.$axios.$get(`me`);
+    const { role } = me;
+    this.role = role;
+    this.setRole(role);
+  },
+  data() {
+    return {
+      role: ''
+    };
+  },
   watch:{
     $route (to, from){
       const { name, query } = to;
@@ -59,7 +70,8 @@ export default {
     ...mapMutations({
       changeRoute: 'global/changeRoute',
       changeAppId: 'global/changeAppId',
-      changeFileId: 'global/changeFileId'
+      changeFileId: 'global/changeFileId',
+      setRole: 'global/setCurrentRole'
     })
   },
   computed: {

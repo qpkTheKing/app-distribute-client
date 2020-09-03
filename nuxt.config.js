@@ -95,8 +95,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://198.13.52.160:4000/user'
-    // baseURL: 'http://localhost:4000/user'
+    // baseURL: 'http://198.13.52.160:4000/user'
+    baseURL: 'http://localhost:4000/user'
   },
   /*
   ** Build configuration
