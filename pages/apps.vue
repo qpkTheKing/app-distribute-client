@@ -181,7 +181,8 @@ export default {
     },
     ...mapMutations({
       changeRoute: 'global/changeRoute',
-      changeFileId: 'global/changeFileId'
+      changeFileId: 'global/changeFileId',
+      changeRole: 'global/setCurrentRole'
     }),
     onCopy: function(e) {
       this.$Message.success(`链接地址已经成功复制到剪切板!`)

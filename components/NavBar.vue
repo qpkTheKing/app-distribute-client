@@ -5,7 +5,7 @@
         欢迎, {{ loggedInUser.name }}
       </a>|
       <NuxtLink to="/">首页</NuxtLink> |
-      <NuxtLink v-if="role === '1'" to="/quota">用户流量管理</NuxtLink> |
+      <NuxtLink v-if="role === '1'" to="/admin">管理</NuxtLink> |
       <a class="navbar-link" href="javascript:void(0)" v-on:click="logout">登出</a>
     </div>
     <template v-else>

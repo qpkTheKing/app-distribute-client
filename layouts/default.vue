@@ -1,6 +1,6 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <Navbar :role="role"/>
+    <Navbar :role="currentRole"/>
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
       <div class="tfs-layout-breadcrumb">
@@ -34,16 +34,8 @@ export default {
   components: {
     Navbar
   },
-  async mounted() {
-    const { data: me } = await this.$axios.$get(`me`);
-    const { role } = me;
-    this.role = role;
-    this.setRole(role);
-  },
   data() {
-    return {
-      role: ''
-    };
+    return {};
   },
   watch:{
     $route (to, from){
@@ -60,6 +52,9 @@ export default {
         case 'register':
         case 'login':
           // do nothing.
+          break;
+        case 'admin':
+          this.changeRoute(name);
           break;
         default:
           this.changeRoute('');
@@ -78,7 +73,8 @@ export default {
     ...mapGetters({
       current: 'global/currentRoute',
       currentAppId: 'global/currentAppId',
-      currentFileId: 'global/currentFileId'
+      currentFileId: 'global/currentFileId',
+      currentRole: 'global/role'
     }),
   }
 }

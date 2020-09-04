@@ -54,12 +54,19 @@ export default {
   async asyncData(ctx) {
     const { $axios, $auth } = ctx;
     const token = $auth.getToken('local').split(' ')[1];
-
     $axios.setToken(token, 'Bearer');
-    const { data } = await $axios.$get('app');
+
+    const { data: apps } = await $axios.$get('app');
+    const { data: me } = await $axios.$get(`me`)
+    const { role } = me;
+
     return {
-      apps: data
+      apps,
+      role
     }
+  },
+  mounted() {
+    this.changeRole(this.role);
   },
   middleware: 'auth',
   computed: {
@@ -75,7 +82,8 @@ export default {
   methods: {
     ...mapMutations({
       changeRoute: 'global/changeRoute',
-      changeAppId: 'global/changeAppId'
+      changeAppId: 'global/changeAppId',
+      changeRole: 'global/setCurrentRole'
     }),
     async addApp() {
       await this.$axios.post('app', { name: this.appName });

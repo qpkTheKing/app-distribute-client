@@ -8,6 +8,10 @@
   opacity: 0;
 }
 
+.tfs-article-admin {
+  padding: 0;
+}
+
 @media (max-width: 767px) {
   .hidden-sm {
     display: none;
