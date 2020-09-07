@@ -52,9 +52,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   async asyncData(ctx) {
-    const { $axios, $auth } = ctx;
-    const token = $auth.getToken('local').split(' ')[1];
-    $axios.setToken(token, 'Bearer');
+    const { $axios } = ctx;
 
     const { data: apps } = await $axios.$get('app');
     const { data: me } = await $axios.$get(`me`)

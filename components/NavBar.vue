@@ -31,6 +31,7 @@ export default {
   methods: {
     async logout() {
       await this.$auth.logout();
+      window.localStorage.clear();
       await this.$router.push('/login');
     }
   },
