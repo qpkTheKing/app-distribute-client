@@ -1,6 +1,6 @@
 <template>
   <article class="tfs-article">
-    <h1>用户登陆</h1>
+    <h1>{{ $t('LOGIN') }}</h1>
     <hr>
     <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80" class="mt20 tfs-narrow-form">
       <Form-item label="邮箱" prop="email">
@@ -45,28 +45,15 @@ export default {
         if (valid) {
           try {
             this.loading = true;
-            // await this.$axios.$post("users/login", {
-            //   email: this.formData.email,
-            //   password: this.formData.password
-            // });
             await this.$auth.loginWith('local', {
               data: {
                 email: this.formData.email,
                 password: this.formData.password
               },
             });
+            await this.$router.push(this.localePath({ name: 'index' }))
             this.$Message.success("登陆成功");
             this.loading = false;
-            // this.$Modal.success({
-            //   title: '登陆成功',
-            //   content: '点确认跳转到品牌页面',
-            //   okText: '我要跳转',
-            //   loading: true,
-            //   onOk: () => {
-            //     this.$Modal.remove();
-            //     this.$router.push('/');
-            //   }
-            // });
           } catch (error) {
             this.loading = false;
             this.$Modal.error({

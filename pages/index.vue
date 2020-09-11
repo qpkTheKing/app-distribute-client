@@ -1,6 +1,6 @@
 <template>
   <article class="tfs-article">
-    <h1>应用列表</h1>
+    <h1>{{ $t('APPS') }}</h1>
     <hr>
     <Row class="mt20" :gutter="16">
       <Col span="6" v-for="app in apps" v-bind:key="app.name">
@@ -15,21 +15,21 @@
             </template>
           </div>
           <p style="text-align: center">
-            <Button type="primary" size="large" @click.prevent="redirect(app.appId, 'apps')">我的分发应用</Button>
+            <Button type="primary" size="large" @click.prevent="redirect(app.appId, 'apps')">{{ $t('MY_DISTRIBUTION_APPS') }}</Button>
 <!--            <Button type="warning" size="small" @click.prevent="redirect(app.appId, 'upload')">上传新版本</Button>-->
           </p>
         </Card>
       </Col>
-      <Col span="4">
+      <Col span="5">
         <Card style="width:100%;background-color: #f8f8f9;cursor: pointer">
           <p slot="title" style="text-align: center; font-size: 14px;">
-            添加应用
+            {{ $t('APP_ADD') }}
           </p>
           <div style="text-align: center;" @click.prevent="showAddAppModal">
             <Icon type="ios-add-circle-outline" style="font-size: 115px;color: #515a6e;"/>
           </div>
           <p style="text-align: center">
-            <Button type="success" size="large" @click.prevent="showAddAppModal">添加应用</Button>
+            <Button type="success" size="large" @click.prevent="showAddAppModal">{{ $t('APP_ADD') }}</Button>
           </p>
         </Card>
       </Col>
@@ -37,12 +37,13 @@
 
     <Modal
       v-model="isModalShow"
-      title="添加应用"
+      :title="$t('APP_ADD')"
       :loading="loading"
+      :ok-text="$t('SUBMIT')"
+      :cancel-text="$t('CANCEL')"
       @on-ok="addApp">
-      <p style="margin-bottom: 10px">应用名称: </p>
-      <Input v-model="appName" placeholder="请输入应用名称..." style="width: 300px"></Input>
-      <Alert type="warning" style="margin-top: 10px;">考虑时间原因，暂不支持上传图片.</Alert>
+      <p style="margin-bottom: 10px">{{ $t('APP_NAME') }}: </p>
+      <Input v-model="appName" :placeholder="$t('APP_NAME_TIP')" style="width: 300px"></Input>
     </Modal>
   </article>
 </template>
@@ -85,7 +86,7 @@ export default {
     }),
     async addApp() {
       await this.$axios.post('app', { name: this.appName });
-      this.$Message.success('创建应用成功, 请上传应用完成剩余步骤。');
+      this.$Message.success(this.$t('APP_CREATE_SUCCESSFUL'));
       await this.$router.push('/');
       this.isModalShow = false;
       this.$router.go(0)
@@ -96,9 +97,8 @@ export default {
     redirect(appId, where) {
       this.changeRoute(where);
       this.changeAppId(appId);
-      this.$router.push(`/${where}?appId=${appId}`);
-    },
-    deleteApp() {}
+      this.$router.push(this.localePath({ name: where, query: { appId }}))
+    }
   },
   components: {}
 }

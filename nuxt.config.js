@@ -4,10 +4,9 @@ export default {
     host: '0.0.0.0' // default: localhost
   },
   publicRuntimeConfig: {
-    // downloadServer: 'http://localhost:1080/files',
-    // client: 'http://192.168.254.100',
+    // client: 'http://198.13.52.160',
+    client: 'http://192.168.254.114',
     downloadServer: 'http://198.13.52.160:1080/files',
-    client: 'http://198.13.52.160',
     socketServer: 'http://198.13.52.160:4000'
   },
   privateRuntimeConfig: {},
@@ -72,19 +71,55 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    'nuxt-i18n',
     '@nuxtjs/axios',
     '@nuxtjs/auth'
   ],
+  // Or with global options
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        name: 'English',
+        file: 'en-US.js'
+      },
+      {
+        code: 'zh-CN',
+        name: '中文',
+        file: 'zh-CN.js'
+      },
+      {
+        code: 'TH',
+        name: 'อักษรไทย',
+        file: 'TH.js'
+      },
+      {
+        code: 'VI',
+        name: 'Chữ Quốc Ngữ',
+        file: 'VI.js'
+      },
+    ],
+    lazy: true,
+    langDir: 'lang/',
+    defaultLocale: 'zh-CN',
+    vueI18n: {
+      fallbackLocale: 'zh-CN',
+    }
+  },
   auth: {
     // Options
+    redirect: {
+      home: false
+    },
     strategies: {
       local: {
         endpoints: {
           login: { url: '/login', method: 'post', propertyName: 'token' },
-          user: { url: '/me', method: 'get', propertyName: false},
+          user: { url: '/me', method: 'get', propertyName: false },
           logout: false
         }
       },
+      autoFetchUser: true,
       tokenRequired: true,
       tokenType: 'bearer',
       globalToken: true
@@ -95,8 +130,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://198.13.52.160:4000/user'
-    // baseURL: 'http://localhost:4000/user'
+    // baseURL: 'http://198.13.52.160:4000/user'
+    baseURL: 'http://localhost:4000/user'
   },
   /*
   ** Build configuration

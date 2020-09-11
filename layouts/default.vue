@@ -1,88 +1,124 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <Navbar :role="currentRole"/>
+    <Navbar :role="currentRole" :locale="currentLocale" :availableLocales="availableLocales" />
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
       <div class="tfs-layout-breadcrumb">
         <Breadcrumb>
-          <BreadcrumbItem to="/">
-            <Icon type="ios-home-outline" style="font-size: 24px;"></Icon> Home
+          <BreadcrumbItem :to="localePath('index')">
+            <Icon type="ios-home-outline" style="font-size: 24px;"></Icon>
+            {{ $t('home') }}
           </BreadcrumbItem>
           <BreadcrumbItem v-if="current === 'apps'">
-            <Icon type="ios-apps-outline" style="font-size: 24px;" /> 我的分发应用
+            <Icon type="ios-apps-outline" style="font-size: 24px;" />
+            {{ $t('MY_DISTRIBUTION_APPS') }}
           </BreadcrumbItem>
-          <BreadcrumbItem :to="`/apps?appId=${currentAppId}`" v-if="current !== 'apps' && current !== ''">
-            <Icon type="ios-apps-outline" style="font-size: 24px;" /> 我的分发应用
+          <BreadcrumbItem
+            :to="localePath({ name: 'apps', query: { appId: currentAppId } })"
+            v-if="current !== 'apps' && current !== ''"
+          >
+            <Icon type="ios-apps-outline" style="font-size: 24px;" />
+            {{ $t('MY_DISTRIBUTION_APPS') }}
           </BreadcrumbItem>
           <BreadcrumbItem v-if="current === 'upload'">
-            <Icon type="md-add" style="font-size: 24px;" /> 新增或编辑
+            <Icon type="md-add" style="font-size: 24px;" />
+            {{ $t('NEW_OR_EDIT') }}
           </BreadcrumbItem>
         </Breadcrumb>
       </div>
     </div>
     <div class="tfs-inner-layout">
-      <Nuxt/>
+      <Nuxt />
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from '~/components/NavBar'
-import { mapGetters, mapMutations } from 'vuex'
+import Navbar from '~/components/NavBar';
+import qs from 'qs';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
-    Navbar
+    Navbar,
   },
   data() {
     return {};
   },
-  watch:{
-    $route (to, from){
-      const { name, query } = to;
-      switch (name) {
-        case 'apps':
-          this.changeAppId(query.appId);
-          this.changeRoute(name)
-          break;
-        case 'upload':
-          this.changeFileId(query.fileId);
-          this.changeRoute(name);
-          break;
-        case 'register':
-        case 'login':
-          // do nothing.
-          break;
-        case 'admin':
-          this.changeRoute(name);
-          break;
-        default:
-          this.changeRoute('');
-      }
+  async mounted() {
+    const { pathname, search } = window.location;
+    let path = pathname.replace('/', '');
+    const query = qs.parse(search, { ignoreQueryPrefix: true });
+
+    if (path.includes('/')) {
+      path = path.split('/')[1];
     }
+
+    if (!path.includes('login') && !path.includes('register')) {
+      const { data: me } = await this.$axios.$get(`me`);
+      const { role } = me;
+      this.onRouterChange(path, query);
+      this.setRole(role);
+    }
+  },
+  watch: {
+    $route(to, from) {
+      const { name, query } = to;
+      const path = name.split('__')[0];
+      this.onRouterChange(path, query);
+    },
   },
   methods: {
     ...mapMutations({
       changeRoute: 'global/changeRoute',
       changeAppId: 'global/changeAppId',
       changeFileId: 'global/changeFileId',
-      setRole: 'global/setCurrentRole'
-    })
+      setRole: 'global/setCurrentRole',
+    }),
+    onRouterChange(path, query) {
+      switch (path) {
+        case 'apps':
+          this.changeAppId(query.appId);
+          this.changeRoute(path);
+          break;
+        case 'upload':
+          this.changeAppId(query.appId);
+          this.changeFileId(query.fileId);
+          this.changeRoute(path);
+          break;
+        case 'register':
+        case 'login':
+          // do nothing.
+          break;
+        case 'admin':
+          this.changeRoute(path);
+          break;
+        default:
+          this.changeRoute('');
+      }
+    },
   },
   computed: {
     ...mapGetters({
       current: 'global/currentRoute',
       currentAppId: 'global/currentAppId',
       currentFileId: 'global/currentFileId',
-      currentRole: 'global/role'
+      currentRole: 'global/role',
     }),
-  }
-}
+    availableLocales() {
+      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
+    },
+    currentLocale() {
+      return this.$i18n.locales.filter((i) => i.code === this.$i18n.locale)[0];
+    },
+  },
+};
 </script>
 
 <style>
 html {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial, sans-serif;
   font-size: 12px;
   line-height: 1.5;
   color: #657180;
@@ -132,7 +168,7 @@ html {
 .tfs-layout-header {
   height: 60px;
   background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .tfs-layout-copy {
@@ -163,6 +199,17 @@ html {
   margin-right: 15px;
 }
 
+.tfs-layout-i18n {
+  float: left;
+  margin-left: 15px;
+}
+
+.tfs-layout-i18n a {
+  display: inline-block;
+  color: #9ba7b5;
+  width: 100%;
+}
+
 .tfs-layout-ceiling-main a {
   color: #9ba7b5;
 }
@@ -189,5 +236,4 @@ html {
   color: #fff;
   line-height: 30px;
 }
-
 </style>

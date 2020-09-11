@@ -3,10 +3,10 @@
     <h1 v-if="!fileUploaded && !fileDbId">{{ appData.name }}</h1>
     <hr v-if="!fileUploaded && !fileDbId">
     <Alert type="success" v-if="fileUploaded" class="mt20">
-      文件已经上传成功，请耐心等待服务器解析包信息，您也可以点击下方的重新上传按钮重新上传文件。
+      {{ $t('PKG_TIP_AFTER_UPLOAD') }}
     </Alert>
     <Alert type="warning" v-if="fileDbId" class="mt20">
-      您正在编辑当前品牌，上传的包的ID必须和您第一次提供的包一致方可更新，请周知.
+      {{ $t('PKG_TIP_UPLOAD') }}
     </Alert>
     <Row v-if="fileUploaded" class="tfs-app-mata-row-new">
       <Col span="5">
@@ -16,17 +16,12 @@
       <Col span="12" style="line-height: 26px;">
         <Row>{{ formData.fileName }}</Row>
         <Row>ID: {{ appMetaData.applicationId }}</Row>
-        <Row>大小: {{ _formatBytes(appMetaData.size) }}</Row>
-        <Row>版本: {{ appMetaData.version }}</Row>
+        <Row>{{ $t('PKG_SIZE') }}: {{ _formatBytes(appMetaData.size) }}</Row>
+        <Row>{{ $t('PKG_VERSION') }}: {{ appMetaData.version }}</Row>
       </Col>
       <Col span="7" style="text-align: right;">
         <Row>
-          <Col span="12">
-            <Button type="warning" @click="reset" :loading="loading" :disabled="!fileUploaded"
-                    style="width: 90%;height: 40px;">预览
-            </Button>
-          </Col>
-          <Col span="12">
+          <Col span="24">
             <Button @click="reset" :loading="loading" :disabled="!fileUploaded" style="width: 90%;height: 40px;">重新上传
             </Button>
           </Col>
@@ -41,13 +36,13 @@
       <Col span="12" style="line-height: 26px;">
         <Row>{{ fileData.name }}</Row>
         <Row>ID: {{ fileData.applicationId ? fileData.applicationId : appData.applicationId }}</Row>
-        <Row>大小: {{ _formatBytes(fileData.size) }}</Row>
-        <Row>版本: {{ fileData.version ? fileData.version : appData.version }}</Row>
+        <Row>{{ $t('PKG_SIZE') }}: {{ _formatBytes(fileData.size) }}</Row>
+        <Row>{{ $t('PKG_VERSION') }}: {{ fileData.version ? fileData.version : appData.version }}</Row>
       </Col>
     </Row>
     <div class="tfs-form-wrapper" v-if="!fileDbId">
       <Form :model="formData" :label-width="80">
-        <Form-item label="平台:" v-if="!fileUploaded">
+        <Form-item :label="$t('PKG_PLATFORM')" v-if="!fileUploaded">
           <Radio-group v-model="formData.phone">
             <Radio label="apple" disabled style="font-size: 14px;">
               <Icon type="logo-apple"></Icon>
@@ -62,32 +57,32 @@
         <div v-if="!fileUploaded">
           <Form-item label="">
             <Alert type="warning">
-              目前只支持安卓应用，请上传APK格式的文件。
+              {{ $t('PKG_TIP_PLATFORM') }}
             </Alert>
           </Form-item>
-          <Form-item label="文件:">
+          <Form-item :label="$t('PKG_FILE')">
             <Upload
               type="drag"
               :before-upload="handleFileUpload"
               action="">
               <div style="padding: 20px 0">
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                <p>点击或将文件拖拽到这里上传</p>
+                <p>{{ $t('PKG_UPLOAD_TIP') }}</p>
               </div>
             </Upload>
           </Form-item>
-          <Form-item label="上传速度">
+          <Form-item :label="$t('PKG_UPLOAD_SPEED')">
             <Alert type="info">
               {{ uploadSpeed }} - {{ bytesUploaded }}
             </Alert>
           </Form-item>
-          <Form-item label="上传进度:">
+          <Form-item :label="$t('PKG_UPLOAD_PROGRESS')">
             <Alert type="info">
               <Progress :percent="formData.uploadProgress" status="active"></Progress>
             </Alert>
           </Form-item>
         </div>
-        <Form-item label="是否启用:" v-if="fileUploaded">
+        <Form-item :label="$t('PKG_ENABLED')" v-if="fileUploaded">
           <Radio-group v-model="forDownload">
             <Radio label="T">是</Radio>
             <Radio label="F">否</Radio>
@@ -112,25 +107,25 @@
             </div>
           </Upload>
         </Form-item>
-        <Form-item label="应用详情:" v-if="fileUploaded">
+        <Form-item :label="$t('PKG_DESCRIPTION')" v-if="fileUploaded">
           <Input v-model="appDescription" :rows="4" type="textarea" placeholder=""/>
         </Form-item>
-        <Form-item label="下载模板:" v-if="fileUploaded">
-          <Input type="text" placeholder="待实现" readonly disabled/>
-        </Form-item>
+<!--        <Form-item label="下载模板:" v-if="fileUploaded">-->
+<!--          <Input type="text" placeholder="待实现" readonly disabled/>-->
+<!--        </Form-item>-->
         <Form-item v-if="!fileDbId">
-          <Button type="primary" @click="handleSubmit(appData)" :loading="loading" :disabled="!fileUploaded">提交
+          <Button type="primary" @click="handleSubmit(appData)" :loading="loading" :disabled="!fileUploaded">{{ $t('SUBMIT') }}
           </Button>
         </Form-item>
       </Form>
     </div>
     <div class="tfs-form-wrapper" v-if="fileDbId">
       <Form :model="formData" :label-width="80">
-        <Form-item label="平台:">Android</Form-item>
-        <Form-item label="是否启用:">
+        <Form-item :label="`${$t('PKG_PLATFORM')}:`">Android</Form-item>
+        <Form-item :label="`${$t('PKG_ENABLED')}:`">
           <Radio-group v-model="forDownload" :value="fileData.forDownload === 'TRUE' ? 'T' : 'F'">
-            <Radio label="T">是</Radio>
-            <Radio label="F">否</Radio>
+            <Radio label="T">{{ $t('YES') }}</Radio>
+            <Radio label="F">{{ $t('NO') }}</Radio>
           </Radio-group>
         </Form-item>
         <Form-item label="应用截图:" v-if="false">
@@ -152,7 +147,7 @@
             </div>
           </Upload>
         </Form-item>
-        <Form-item label="应用详情:">
+        <Form-item :label="`${$t('PKG_DESCRIPTION')}:`">
           <Input v-model="appDescription" :value="fileData.description" :rows="4" type="textarea" placeholder=""/>
         </Form-item>
         <Form-item label="下载模板:" v-if="fileUploaded">
@@ -161,37 +156,37 @@
         <div v-if="!fileUploaded">
           <Form-item label="">
             <Alert type="warning">
-              目前只支持安卓应用，请上传APK格式的文件。
+              {{ $t('PKG_TIP_PLATFORM') }}
             </Alert>
           </Form-item>
-          <Form-item label="文件:">
+          <Form-item :label="`${$t('PKG_FILE')}:`">
             <Upload
               type="drag"
               :before-upload="handleFileUpload"
               action="">
               <div style="padding: 20px 0">
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                <p>点击或将文件拖拽到这里上传</p>
+                <p>{{ $t('PKG_UPLOAD_TIP') }}</p>
               </div>
             </Upload>
           </Form-item>
-          <Form-item label="上传速度">
+          <Form-item :label="`${$t('PKG_UPLOAD_SPEED')}:`">
             <Alert type="info">
               {{ uploadSpeed }} - {{ bytesUploaded }}
             </Alert>
           </Form-item>
-          <Form-item label="上传进度:">
+          <Form-item :label="`${$t('PKG_UPLOAD_PROGRESS')}:`">
             <Alert type="info">
               <Progress :percent="formData.uploadProgress" status="active"></Progress>
             </Alert>
           </Form-item>
         </div>
         <Form-item v-if="!fileDbId">
-          <Button type="primary" @click="handleSubmit()" :loading="loading" :disabled="!fileUploaded">提交
+          <Button type="primary" @click="handleSubmit()" :loading="loading" :disabled="!fileUploaded">{{ $t('SUBMIT') }}
           </Button>
         </Form-item>
         <Form-item v-if="fileDbId">
-          <Button type="primary" @click="handleSubmit()" :loading="loading">提交修改
+          <Button type="primary" @click="handleSubmit()" :loading="loading">{{ $t('EDIT') }}
           </Button>
         </Form-item>
       </Form>

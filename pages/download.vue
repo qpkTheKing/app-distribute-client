@@ -4,7 +4,7 @@
       <Col :xs="24" :sm="24" :md="12" :lg="12" class="sm-text-center" style="margin-bottom: 20px">
         <Row>
           <Col :xs="24" :sm="24" :md="8" :lg="8">
-            <img :src="icon" alt="" width="100"/>
+            <img :src="icon" alt="" width="100" />
           </Col>
           <Row style="margin-top: 15px;margin-bottom: 15px;">
             <Col span="24" class="tLeft-md tCenter-sm">
@@ -15,28 +15,28 @@
                 :loading="downloading"
                 v-on:click="handleDownload"
               >
-                <Icon style="font-size: 14px;" type="md-cloud-download"/>
-                下载
+                <Icon style="font-size: 14px;" type="md-cloud-download" />
+                {{ $t('PKG_BTN_DOWNLOAD') }}
               </Button>
             </Col>
           </Row>
           <Col :xs="24" :sm="24" :md="16" :lg="16">
-            <div style="margin-bottom: 5px;">版本: 2.1.2</div>
-            <div>最后更新: 2020-08-20 16:51 PM</div>
+            <div style="margin-bottom: 5px;">{{ $t('PKG_VERSION') }}: {{ version }}</div>
+            <div>{{ $t('PKG_LAST_UPDATE') }}: 2020-08-20 16:51 PM</div>
           </Col>
         </Row>
       </Col>
-      <Divider style="margin: 20px 0;" class="hidden-md">或者使用手机扫描下面的二维码安装</Divider>
+      <Divider style="margin: 20px 0;" class="hidden-md">{{ $t('APP_TIP_DOWNLOAD') }}</Divider>
       <Col :xs="24" :sm="24" :md="12" :lg="12">
-        <p style="font-size: 14px" class="hidden-sm">或请用手机扫描下面二维码下载</p>
+        <p style="font-size: 14px" class="hidden-sm">{{ $t('APP_TIP_DOWNLOAD') }}</p>
         <div id="tfs-download-qrcode" class="tLeft-md tCenter-sm"></div>
       </Col>
     </Row>
-    <Divider style="margin: 20px 0;">应用截图</Divider>
-    <Row>
+    <Divider style="margin: 20px 0;display: none;">应用截图</Divider>
+    <Row style="display: none;">
       图片栏
     </Row>
-    <Divider style="margin: 20px 0;">应用描述</Divider>
+    <Divider style="margin: 20px 0;">{{ $t('PKG_DESCRIPTION') }}</Divider>
     <Row>
       <Col span="24">
         <p style="font-size: 16px;">
@@ -52,11 +52,11 @@
 export default {
   layout: 'download',
   async asyncData(ctx) {
-    const { query, $axios } = ctx
-    const { data: downloadInfo } = await $axios.$get(`download?fileHash=${query.file}`)
-    const { fileName, appId, appName, icon, version, email, size, fileHash, description } = downloadInfo
+    const { query, $axios } = ctx;
+    const { data: downloadInfo } = await $axios.$get(`download?fileHash=${query.file}`);
+    const { fileName, appId, appName, icon, version, email, size, fileHash, description } = downloadInfo;
 
-    return { fileName, fileHash, appId, appName, icon, version, email, size, description }
+    return { fileName, fileHash, appId, appName, icon, version, email, size, description };
   },
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
       downloading: false,
       prepare: false,
       progress: 0
-    }
+    };
   },
   head() {
     return {
@@ -73,39 +73,40 @@ export default {
       script: [
         { hid: 'gtag', src: 'https://www.googletagmanager.com/gtag/js?id=UA-100724095-1', async: true, defer: true }
       ]
-    }
+    };
   },
   mounted() {
-    const downloadUrl = `${this.$config.client}/download?file=${this.fileHash}`
-    let mqlSM = window.matchMedia('(max-width: 767px)')
-    let mqlMD = window.matchMedia('(min-width: 767px)')
+    const url = this.localePath({ name: 'download', query: { file: this.fileHash } });
+    const downloadUrl = `${this.$config.client}${url}`;
+    let mqlSM = window.matchMedia('(max-width: 767px)');
+    let mqlMD = window.matchMedia('(min-width: 767px)');
     if (mqlSM.matches) {
-      this.qrCode(downloadUrl, 'tfs-download-qrcode', 100)
+      this.qrCode(downloadUrl, 'tfs-download-qrcode', 100);
     }
     if (mqlMD.matches) {
-      this.qrCode(downloadUrl, 'tfs-download-qrcode', 180)
+      this.qrCode(downloadUrl, 'tfs-download-qrcode', 180);
     }
 
     // Add Google Analytics
-    window.dataLayer = window.dataLayer || []
+    window.dataLayer = window.dataLayer || [];
 
     function gtag() {
-      dataLayer.push(arguments)
+      dataLayer.push(arguments);
     }
 
-    gtag('js', new Date())
+    gtag('js', new Date());
 
-    gtag('config', 'UA-100724095-1')
+    gtag('config', 'UA-100724095-1');
   },
   methods: {
     _toMb(bytes, roundTo) {
-      const converted = bytes / (1024 * 1024)
-      return roundTo ? converted.toFixed(roundTo) : converted
+      const converted = bytes / (1024 * 1024);
+      return roundTo ? converted.toFixed(roundTo) : converted;
     },
     _browser() {
-      const u = navigator.userAgent
-      const ua = navigator.userAgent.toLocaleLowerCase()
-      const app = navigator.appVersion
+      const u = navigator.userAgent;
+      const ua = navigator.userAgent.toLocaleLowerCase();
+      const app = navigator.appVersion;
       return {
         trident: u.indexOf('Trident') > -1, // IE内核
         presto: u.indexOf('Presto') > -1, // opera内核
@@ -126,67 +127,67 @@ export default {
         webview: !(u.match(/Chrome\/([\d.]+)/) || u.match(/CriOS\/([\d.]+)/)) && u.match(/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/),
         ucWeb: function() {
           try {
-            return parseFloat(u.match(/ucweb\d+\.\d+/gi).toString().match(/\d+\.\d+/).toString()) >= 8.2
+            return parseFloat(u.match(/ucweb\d+\.\d+/gi).toString().match(/\d+\.\d+/).toString()) >= 8.2;
           } catch (e) {
-            return u.indexOf('UC') > -1
+            return u.indexOf('UC') > -1;
           }
         }(),
         Symbian: u.indexOf('Symbian') > -1,
         ucSB: u.indexOf('Firefox/1.') > -1
-      }
+      };
     },
     async _downloadByBrowser() {
-      this.downloading = true
-      this.progress = 100
-      const isQuotaFull = await this._isQuotaFull()
+      this.downloading = true;
+      this.progress = 100;
+      const isQuotaFull = await this._isQuotaFull();
       if (isQuotaFull) {
         await this.$axios.$post('quota', {
           usedQuota: this._toMb(this.size, 2),
           email: this.email
-        })
+        });
         this.$Notice.success({
           top: 50,
-          title: '文件下载即将开始',
-          desc: '请关注浏览器下方是否弹出文件下载提醒.'
-        })
-        const link = document.createElement('a')
-        link.href = `${this.$config.downloadServer}/${this.fileHash}`
-        link.download = this.fileName
-        link.click()
-        this.downloading = false
+          title: this.$t('APP_DOWNLOAD_BEGIN'),
+          desc: this.$t('APP_DOWNLOAD_TIP')
+        });
+        const link = document.createElement('a');
+        link.href = `${this.$config.downloadServer}/${this.fileHash}`;
+        link.download = this.fileName;
+        link.click();
+        this.downloading = false;
       }
     },
     async _isQuotaFull() {
-      const { data } = await this.$axios.$get(`quota?email=${this.email}`)
+      const { data } = await this.$axios.$get(`quota?email=${this.email}`);
       if (parseFloat(data) < this._toMb(this.size, 2)) {
         this.$Notice.error({
           top: 100,
           title: '无法下载',
           desc: '请联系应用开发商购买更多流量.'
-        })
-        return false
+        });
+        return false;
       }
-      return true
+      return true;
     },
     handleDownload(event) {
-      event.preventDefault()
+      event.preventDefault();
       if (this._browser().weiXin) {
-        this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
+        this.$Message.warning(this.$t('APP_DOWNLOAD_INCOM_TIP'));
       } else if (this._browser().QQbrw) {
-        this._downloadByBrowser()
+        this._downloadByBrowser();
       } else if (this._browser().ucWeb) {
-        this._downloadByBrowser()
+        this._downloadByBrowser();
       } else if (this._browser().QQ && !this._browser().QQbrw) {
-        this.$Message.warning('请复制地址到外部浏览器打开进行下载.')
+        this.$Message.warning(this.$t('APP_DOWNLOAD_INCOM_TIP'));
       } else {
-        this._downloadByBrowser()
+        this._downloadByBrowser();
       }
     },
     qrCode(url, elementId, size) {
-      const element = document.getElementById(elementId)
+      const element = document.getElementById(elementId);
       this.$nextTick(() => {
         // element.style.display = element.style.display === 'none' ? 'block' : 'none'
-        element.innerHTML = ''
+        element.innerHTML = '';
         new window.QRCode(elementId, {
           render: 'table',
           text: url,
@@ -195,12 +196,12 @@ export default {
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H
-        })
-      })
+        });
+      });
     }
   },
   components: {}
-}
+};
 </script>
 
 <style scoped>
@@ -233,10 +234,12 @@ p {
 
 @media (min-width: 768px) {
   #tfs-download-qrcode {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     text-align: left;
     margin: 10px 0;
+    padding: 10px;
+    background: #fff;
   }
 
   .tfs-download-info-resp {

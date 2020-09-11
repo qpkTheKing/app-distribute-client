@@ -57,6 +57,10 @@ export default {
     const { data: me } = await this.$axios.$get(`me`);
     const { role } = me;
     this.role = role;
+    if (role !== '1') {
+      this.$Message.error('您不是管理员，无权使用本页面.');
+      await this.$router.push('/');
+    }
   },
   data() {
     return {

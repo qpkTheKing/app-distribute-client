@@ -15,7 +15,9 @@
     "concatenateblobs": "^1.0.2",
     "iview": "^3.5.4",
     "nuxt": "^2.14.0",
+    "nuxt-i18n": "^6.14.2",
     "qrcodejs2": "^0.0.2",
+    "qs": "^6.9.4",
     "tus-js-client": "^2.1.1",
     "vue-clipboard2": "^0.3.1"
   },
