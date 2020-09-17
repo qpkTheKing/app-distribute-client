@@ -225,8 +225,8 @@ p {
 
 @media (max-width: 767px) {
   #tfs-download-qrcode {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 
   .tfs-download-info-resp {
