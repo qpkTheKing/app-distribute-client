@@ -219,6 +219,8 @@ p {
   margin: 0 auto;
   border-radius: 5px;
   border: 1px solid #dedede;
+  padding: 10px;
+  background: #fff;
 }
 
 @media (max-width: 767px) {
