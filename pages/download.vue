@@ -69,7 +69,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.appName}下载`,
+      title: `${this.appName}`,
       script: [
         { hid: 'gtag', src: 'https://www.googletagmanager.com/gtag/js?id=UA-100724095-1', async: true, defer: true }
       ]
@@ -162,8 +162,8 @@ export default {
       if (parseFloat(data) < this._toMb(this.size, 2)) {
         this.$Notice.error({
           top: 100,
-          title: '无法下载',
-          desc: '请联系应用开发商购买更多流量.'
+          title: this.$t('DOWNLOAD_TIP_UNABLE_DOWNLOAD'),
+          desc: this.$t('DOWNLOAD_TIP_DESC')
         });
         return false;
       }

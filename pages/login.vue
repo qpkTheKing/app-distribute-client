@@ -3,14 +3,14 @@
     <h1>{{ $t('LOGIN') }}</h1>
     <hr>
     <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80" class="mt20 tfs-narrow-form">
-      <Form-item label="邮箱" prop="email">
-        <Input v-model="formData.email" placeholder="请输入邮箱"></Input>
+      <Form-item :label="this.$t('EMAIL')" prop="email">
+        <Input v-model="formData.email" :placeholder="this.$t('FORM_TIP_EMAIL')"></Input>
       </Form-item>
-      <Form-item label="密码" prop="password">
-        <Input type="password" v-model="formData.password" placeholder="请输入密码"></Input>
+      <Form-item :label="this.$t('PASSWD')" prop="password">
+        <Input type="password" v-model="formData.password" :placeholder="this.$t('FORM_TIP_PASSWORD')"></Input>
       </Form-item>
       <Form-item>
-        <Button type="primary" @click="handleSubmit('formData')" :loading="loading">提交</Button>
+        <Button type="primary" @click="handleSubmit('formData')" :loading="loading">{{ $t('SUBMIT') }}</Button>
       </Form-item>
     </Form>
   </article>
@@ -27,11 +27,11 @@ export default {
       },
       ruleValidate: {
         email: [
-          { required: true, message: '邮箱不能为空', trigger: 'blur' },
-          { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
+          { required: true, message: this.$t('FORM_ERR_TIP_EMAIL'), trigger: 'blur' },
+          { type: 'email', message: this.$t('FORM_ERR_TIP_EMAIL_FORMAT'), trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '密码不能空', trigger: 'blur' }
+          { required: true, message: this.$t('FORM_ERR_TIP_EMAIL'), trigger: 'blur' }
         ]
       }
     }
@@ -52,13 +52,13 @@ export default {
               },
             });
             await this.$router.push(this.localePath({ name: 'index' }))
-            this.$Message.success("登陆成功");
+            this.$Message.success(this.$t('FORM_LOGIN_SUCCESS'));
             this.loading = false;
           } catch (error) {
             this.loading = false;
             this.$Modal.error({
-              title: '登陆失败',
-              content: "请检查用户名和密码是否正确"
+              title: this.$t('FORM_LOGIN_FAILED'),
+              content: this.$t('FORM_LOGIN_FAILED_DESC')
             });
           }
         }

@@ -3,17 +3,17 @@
     <h1>注册用户</h1>
     <hr>
     <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80" class="mt20 tfs-narrow-form">
-      <Form-item label="邮箱" prop="email">
-        <Input v-model="formData.email" placeholder="请输入邮箱"></Input>
+      <Form-item :label="this.$t('EMAIL')" prop="email">
+        <Input v-model="formData.email" :placeholder="this.$t('FORM_TIP_EMAIL')"></Input>
       </Form-item>
-      <Form-item label="用户名" prop="name">
-        <Input v-model="formData.name" placeholder="请输入用户名"></Input>
+      <Form-item :label="this.$t('USERNAME')" prop="name">
+        <Input v-model="formData.name" :placeholder="this.$t('FORM_TIP_USER')"></Input>
       </Form-item>
-      <Form-item label="密码" prop="password">
-        <Input type="password" v-model="formData.password" placeholder="请输入密码"></Input>
+      <Form-item :label="this.$t('PASSWD')" prop="password">
+        <Input type="password" v-model="formData.password" :placeholder="this.$t('FORM_TIP_PASSWORD')"></Input>
       </Form-item>
-      <Form-item label="确认密码" prop="passwdCheck">
-        <Input type="password" v-model="formData.passwdCheck" placeholder="请再次输入密码"></Input>
+      <Form-item :label="this.$t('PASSWD_AGAIN')" prop="passwdCheck">
+        <Input type="password" v-model="formData.passwdCheck" :placeholder="this.$t('FORM_TIP_CONFIRM_PASSWORD')"></Input>
       </Form-item>
 <!--      <Alert type="warning">在注册的时设置流量是出于测试目的，简化掉用户中心，直接测试流量余额。</Alert>-->
 <!--      <Form-item label="流量额度">-->
@@ -21,8 +21,8 @@
 <!--                show-input></Slider>-->
 <!--      </Form-item>-->
       <Form-item>
-        <Button type="primary" @click="handleSubmit('formData')" :loading="loading">提交</Button>
-        <Button @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
+        <Button type="primary" @click="handleSubmit('formData')" :loading="loading">{{ this.$t('SUBMIT') }}</Button>
+        <Button @click="handleReset('formData')" style="margin-left: 8px">{{ this.$t('FORM_RESET') }}</Button>
       </Form-item>
     </Form>
   </article>
@@ -33,7 +33,7 @@ export default {
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error(this.$t('FORM_TIP_PASSWORD')));
       } else {
         if (this.formData.passwdCheck !== '') {
           this.$refs.formData.validateField('passwdCheck');
@@ -43,9 +43,9 @@ export default {
     }
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'));
+        callback(new Error(this.$t('FORM_TIP_CONFIRM_PASSWORD')));
       } else if (value !== this.formData.password) {
-        callback(new Error('两次输入密码不一致!'));
+        callback(new Error(this.$t('FORM_ERR_TIP_PASSWORD_CONFIRM')));
       } else {
         callback();
       }
@@ -61,18 +61,18 @@ export default {
       },
       ruleValidate: {
         name: [
-          { required: true, message: '姓名不能为空', trigger: 'blur' }
+          { required: true, message: this.$t('FORM_ERR_TIP_USERNAME'), trigger: 'blur' }
         ],
         email: [
-          { required: true, message: '邮箱不能为空', trigger: 'blur' },
-          { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
+          { required: true, message: this.$t('FORM_ERR_TIP_EMAIL'), trigger: 'blur' },
+          { type: 'email', message: this.$t('FORM_ERR_TIP_EMAIL_FORMAT'), trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '密码不能空', trigger: 'blur' },
+          { required: true, message: this.$t('FORM_ERR_TIP_PASSWORD'), trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }
         ],
         passwdCheck: [
-          { required: true, message: '请再次输入密码', trigger: 'blur' },
+          { required: true, message: this.$t('FORM_TIP_CONFIRM_PASSWORD'), trigger: 'blur' },
           { validator: validatePassCheck, trigger: 'blur' }
         ]
       }
@@ -93,7 +93,7 @@ export default {
               password: this.formData.password,
               quota: 50
             });
-            this.$Message.success("注册成功.");
+            this.$Message.success(this.$t('FORM_REGISTER_SUCCESS'));
             await this.$auth.loginWith('local', {
               data: {
                 email: this.formData.email,
@@ -114,7 +114,7 @@ export default {
           } catch (error) {
             this.loading = false;
             this.$Modal.error({
-              title: '注册失败',
+              title: this.$t('FORM_REGISTER_ERROR'),
               content: error.response.data.error
             });
           }
