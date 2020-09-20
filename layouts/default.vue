@@ -1,6 +1,7 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <Navbar :role="currentRole" :locale="currentLocale" :availableLocales="availableLocales" />
+    <Navbar :role="currentRole" :locale="currentLocale" :availableLocales="availableLocales"
+            :setLocal="this.$i18n.setLocale" />
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
       <div class="tfs-layout-breadcrumb">
@@ -40,7 +41,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
-    Navbar,
+    Navbar
   },
   data() {
     return {};
@@ -66,14 +67,14 @@ export default {
       const { name, query } = to;
       const path = name.split('__')[0];
       this.onRouterChange(path, query);
-    },
+    }
   },
   methods: {
     ...mapMutations({
       changeRoute: 'global/changeRoute',
       changeAppId: 'global/changeAppId',
       changeFileId: 'global/changeFileId',
-      setRole: 'global/setCurrentRole',
+      setRole: 'global/setCurrentRole'
     }),
     onRouterChange(path, query) {
       switch (path) {
@@ -96,29 +97,29 @@ export default {
         default:
           this.changeRoute('');
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       current: 'global/currentRoute',
       currentAppId: 'global/currentAppId',
       currentFileId: 'global/currentFileId',
-      currentRole: 'global/role',
+      currentRole: 'global/role'
     }),
     availableLocales() {
       return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
     },
     currentLocale() {
       return this.$i18n.locales.filter((i) => i.code === this.$i18n.locale)[0];
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style>
 html {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial, sans-serif;
+  'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial, sans-serif;
   font-size: 12px;
   line-height: 1.5;
   color: #657180;

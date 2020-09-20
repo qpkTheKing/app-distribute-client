@@ -1,15 +1,31 @@
 <template>
   <div class="ivu-layout tfs-layout">
     <div class="tfs-download-inner-layout">
-      <Nuxt/>
+      <div class="tfs-i18n-container">
+        <I18nSwitcher :locale="currentLocale" :available-locales="availableLocales"
+                      :set-local="this.$i18n.setLocale"></I18nSwitcher>
+      </div>
+      <Nuxt />
     </div>
   </div>
 </template>
 
 <script>
+import I18nSwitcher from '@/components/I18nSwitcher';
+
 export default {
-  components: {}
-}
+  components: {
+    I18nSwitcher
+  },
+  computed: {
+    availableLocales() {
+      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
+    },
+    currentLocale() {
+      return this.$i18n.locales.filter((i) => i.code === this.$i18n.locale)[0];
+    }
+  }
+};
 </script>
 
 <style>
@@ -44,6 +60,12 @@ html {
   background: #fff;
   border-radius: 6px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.tfs-i18n-container {
+  padding: .5rem;
+  background: rgba(45,140,240,.2);
+  border-radius: 6px 6px 0 0;
 }
 
 </style>

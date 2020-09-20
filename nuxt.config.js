@@ -1,10 +1,14 @@
 export default {
+  loading: {
+    color: 'white',
+    height: '5px'
+  },
   server: {
     port: 80, // default: 3000
     host: '0.0.0.0' // default: localhost
   },
   publicRuntimeConfig: {
-    // client: 'http://192.168.254.114',
+    // client: 'http://192.168.254.116',
     client: 'http://198.13.52.160',
     downloadServer: 'http://198.13.52.160:1080/files',
     socketServer: 'http://198.13.52.160:4000'
@@ -77,6 +81,12 @@ export default {
   ],
   // Or with global options
   i18n: {
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true
+      // onlyOnRoot: true,
+    },
     locales: [
       {
         code: 'en',
@@ -101,9 +111,9 @@ export default {
     ],
     lazy: true,
     langDir: 'lang/',
-    defaultLocale: 'zh-CN',
+    defaultLocale: 'en',
     vueI18n: {
-      fallbackLocale: 'zh-CN',
+      fallbackLocale: 'en',
     }
   },
   auth: {

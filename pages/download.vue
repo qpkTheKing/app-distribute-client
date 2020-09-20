@@ -22,7 +22,7 @@
           </Row>
           <Col :xs="24" :sm="24" :md="16" :lg="16">
             <div style="margin-bottom: 5px;">{{ $t('PKG_VERSION') }}: {{ version }}</div>
-            <div>{{ $t('PKG_LAST_UPDATE') }}: 2020-08-20 16:51 PM</div>
+            <div>{{ $t('PKG_LAST_UPDATE') }}: {{ formattedUpdate }}</div>
           </Col>
         </Row>
       </Col>
@@ -48,15 +48,17 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 
 export default {
   layout: 'download',
   async asyncData(ctx) {
     const { query, $axios } = ctx;
     const { data: downloadInfo } = await $axios.$get(`download?fileHash=${query.file}`);
-    const { fileName, appId, appName, icon, version, email, size, fileHash, description } = downloadInfo;
+    const { fileName, appId, appName, icon, version, email, size, fileHash, description, updated } = downloadInfo;
+    const formattedUpdate = dayjs(updated).format('YYYY-MM-DD HH:mm:ss');
 
-    return { fileName, fileHash, appId, appName, icon, version, email, size, description };
+    return { fileName, fileHash, appId, appName, icon, version, email, size, description, formattedUpdate };
   },
   data() {
     return {
