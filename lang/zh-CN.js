@@ -41,7 +41,7 @@ export default {
   PKG_FILE: '文件',
   PKG_SIZE: '文件体积',
   PKG_VERSION: '文件版本',
-  PKG_DESCRIPTION: '应用详情',
+  PKG_DESCRIPTION: '应用描述',
   PKG_ENABLED: '是否启用',
   PKG_CURRENT_STATUS: '正常',
   PKG_DOWNLOAD_TEMPLATE: '下载模板',

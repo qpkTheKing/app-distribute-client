@@ -5,13 +5,14 @@
         <Row>
           <Col :xs="24" :sm="24" :md="8" :lg="8">
             <img :src="icon" alt="" width="100" />
+            <span v-if="type === 'ios'" style="display: block;font-size: 1.5rem;margin-bottom: .5rem;">{{ fileName }}</span>
           </Col>
           <Row style="margin-top: 15px;margin-bottom: 15px;">
             <Col span="24" class="tLeft-md tCenter-sm">
               <h1 class="hidden-sm" style="font-size: 16px;">{{ appName }}</h1>
               <Button
                 type="success"
-                style="width: 100px;height: 30px;margin-top: 10px"
+                style="width: 150px;height: 30px;margin-top: 10px"
                 :loading="downloading"
                 v-on:click="handleDownload"
               >
@@ -21,7 +22,7 @@
             </Col>
           </Row>
           <Col :xs="24" :sm="24" :md="16" :lg="16">
-            <div style="margin-bottom: 5px;">{{ $t('PKG_VERSION') }}: {{ version }}</div>
+            <div style="margin-bottom: 5px;" v-if="type !== 'ios'">{{ $t('PKG_VERSION') }}: {{ version }}</div>
             <div>{{ $t('PKG_LAST_UPDATE') }}: {{ formattedUpdate }}</div>
           </Col>
         </Row>
@@ -53,12 +54,16 @@ import dayjs from 'dayjs';
 export default {
   layout: 'download',
   async asyncData(ctx) {
+    let iosDownloadUrl = '';
     const { query, $axios } = ctx;
     const { data: downloadInfo } = await $axios.$get(`download?fileHash=${query.file}`);
-    const { fileName, appId, appName, icon, version, email, size, fileHash, description, updated } = downloadInfo;
+    const { fileName, appId, appName, icon, version, email, size, fileHash, description, type, updated } = downloadInfo;
     const formattedUpdate = dayjs(updated).format('YYYY-MM-DD HH:mm:ss');
+    if (type === 'ios') {
+      iosDownloadUrl = downloadInfo.ios.downloadUrl;
+    }
 
-    return { fileName, fileHash, appId, appName, icon, version, email, size, description, formattedUpdate };
+    return { fileName, fileHash, appId, appName, icon, version, email, size, description, type, iosDownloadUrl, formattedUpdate };
   },
   data() {
     return {
@@ -141,22 +146,35 @@ export default {
     async _downloadByBrowser() {
       this.downloading = true;
       this.progress = 100;
-      const isQuotaFull = await this._isQuotaFull();
-      if (isQuotaFull) {
-        await this.$axios.$post('quota', {
-          usedQuota: this._toMb(this.size, 2),
-          email: this.email
-        });
+      if (this.type === 'ios') {
         this.$Notice.success({
           top: 50,
           title: this.$t('APP_DOWNLOAD_BEGIN'),
           desc: this.$t('APP_DOWNLOAD_TIP')
         });
         const link = document.createElement('a');
-        link.href = `${this.$config.downloadServer}/${this.fileHash}`;
+        link.href = this.iosDownloadUrl;
         link.download = this.fileName;
         link.click();
         this.downloading = false;
+      } else {
+        const isQuotaFull = await this._isQuotaFull();
+        if (isQuotaFull) {
+          await this.$axios.$post('quota', {
+            usedQuota: this._toMb(this.size, 2),
+            email: this.email
+          });
+          this.$Notice.success({
+            top: 50,
+            title: this.$t('APP_DOWNLOAD_BEGIN'),
+            desc: this.$t('APP_DOWNLOAD_TIP')
+          });
+          const link = document.createElement('a');
+          link.href = `${this.$config.downloadServer}/${this.fileHash}`;
+          link.download = this.fileName;
+          link.click();
+          this.downloading = false;
+        }
       }
     },
     async _isQuotaFull() {

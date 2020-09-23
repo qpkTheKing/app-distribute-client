@@ -1,6 +1,7 @@
 <template>
   <div class="ivu-layout tfs-layout">
-    <Navbar :role="role" />
+    <Navbar :role="role" :locale="currentLocale" :availableLocales="availableLocales"
+            :setLocal="this.$i18n.setLocale"/>
     <div class="tfs-layout-header">
       <div class="tfs-layout-logo">TFS APP Distribute Platform</div>
       <div class="tfs-layout-breadcrumb">
@@ -86,6 +87,12 @@ export default {
     })
   },
   computed: {
+    availableLocales() {
+      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
+    },
+    currentLocale() {
+      return this.$i18n.locales.filter((i) => i.code === this.$i18n.locale)[0];
+    },
     ...mapGetters({
       current: 'global/currentRoute'
     }),
