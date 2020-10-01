@@ -276,7 +276,7 @@ export default {
     },
     async handleSubmit() {
       let commonPayload = {};
-      if (this.formData.phone === 'android' && this.fileData.fType !== 'mobile-config') {
+      if (this.formData.phone === 'android' && this.fileData && this.fileData.fType !== 'mobile-config') {
         if (this.appMetaData !== {} && this.formData.fileFingerPrint !== '') {
           this.loading = true;
           commonPayload = {
@@ -304,7 +304,7 @@ export default {
           this.$Notice.success({
             title: '应用提交成功，即将跳转应用列表页面.'
           });
-          await this.$router.push(`/apps?appId=${this.appId}`);
+          await this.$router.push(this.localePath({ name: 'apps', query: { appId: this.appId } }));
         } else {
           await this.$axios.$post('app/file', {
             appId: this.appId,
@@ -317,7 +317,7 @@ export default {
           this.$Notice.success({
             title: '应用修改成功，即将跳转应用列表页面.'
           });
-          await this.$router.push(`/apps?appId=${this.appId}`);
+          await this.$router.push(this.localePath({ name: 'apps', query: { appId: this.appId } }));
         }
       } else {
         commonPayload = {
