@@ -276,7 +276,7 @@ export default {
     },
     async handleSubmit() {
       let commonPayload = {};
-      if (this.formData.phone === 'android' && this.fileData && this.fileData.fType !== 'mobile-config') {
+      if (this.formData.phone === 'android') {
         if (this.appMetaData !== {} && this.formData.fileFingerPrint !== '') {
           this.loading = true;
           commonPayload = {
