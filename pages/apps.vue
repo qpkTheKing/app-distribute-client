@@ -27,9 +27,9 @@
         <p style="font-size: 16px; font-weight: bolder;color: #ed4014;">0 M</p>
       </Col>
     </Row>
-    <Table :columns="columns" :data="appFiles" :no-data-text="$t('PKG_NOT_FOUND')">
+    <Table :columns="columns" :data="appFiles" :no-data-text="$t('PKG_NOT_FOUND')" :loading="tableLoading">
       <template slot-scope="{ row, index }" slot="icon">
-        <img :src="appInfo.icon" alt="" width="40" style="margin-top: 5px;" />
+        <img :src="row.icon" alt="" width="40" style="margin-top: 5px;" />
       </template>
       <template slot-scope="{ row, index }" slot="forDownload">
         <div v-if="row.forDownload === 'TRUE'">{{ $t('PKG_CURRENT_STATUS') }}</div>
@@ -68,6 +68,8 @@ export default {
     return {
       platform: '',
       keyword: '',
+      tableLoading: false,
+      appFiles: [],
       clipboard: {
         message: '复制成功'
       },
@@ -163,7 +165,22 @@ export default {
                     this._download(hashId);
                   }
                 }
-              }, `${this.$t('PKG_BTN_DOWNLOAD')}`)
+              }, `${this.$t('PKG_BTN_DOWNLOAD')}`),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                style: {
+                  marginLeft: '5px'
+                },
+                on: {
+                  click: () => {
+                    const { hashId } = row;
+                    this.onDelete(hashId);
+                  }
+                }
+              }, `${this.$t('PKG_BTN_DELETE')}`)
             ]);
           }
         }
@@ -181,6 +198,13 @@ export default {
       link.href = `${this.$config.downloadServer}/${fileHash}`;
       link.download = this.fileName;
       link.click();
+    },
+    async onDelete(hashId) {
+      this.tableLoading = true;
+      await this.$axios.delete(`app?appId=${this.appId}&hashId=${hashId}`);
+      const { data: appFiles } = await this.$axios.$get(`app/files?appId=${this.appId}`);
+      this.appFiles = appFiles;
+      this.tableLoading = false;
     },
     ...mapMutations({
       changeRoute: 'global/changeRoute',

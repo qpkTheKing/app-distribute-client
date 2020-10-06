@@ -5,9 +5,12 @@
     <Row class="mt20" :gutter="16">
       <Col span="6" v-for="app in apps" v-bind:key="app.name">
         <Card style="width:100%; margin-bottom: 15px; cursor: pointer">
-          <p slot="title" style="text-align: center; font-size: 14px;">
+          <p slot="title" style="font-size: 14px;">
             {{ app.name }}
           </p>
+          <a href="#" slot="extra" @click.prevent="showRemoveAppModal(app.appId)">
+            <Icon type="ios-trash" style="font-size: 26px; color: #ed4014;" />
+          </a>
           <div style="text-align: center;margin-bottom: 10px;">
             <img :src="app.icon" alt="" width="100" v-if="app.icon && app.icon !== ''"/>
             <template v-else>
@@ -34,6 +37,18 @@
         </Card>
       </Col>
     </Row>
+
+    <Modal
+      v-model="isDelModalShow"
+      :title="$t('DIALOG_DELETE_TITLE')"
+      :loading="loading"
+      :ok-text="$t('SUBMIT')"
+      :cancel-text="$t('CANCEL')"
+      :mask-closable="false"
+      @on-ok="deleteApp"
+    >
+      <p style="margin-bottom: 10px; font-size: 14px;">{{ $t('DIALOG_DELETE_CONTENT') }} </p>
+    </Modal>
 
     <Modal
       v-model="isModalShow"
@@ -73,9 +88,11 @@ export default {
   },
   data() {
     return {
+      isDelModalShow: false,
       isModalShow: false,
       loading: false,
-      appName: ''
+      appName: '',
+      apps: [],
     }
   },
   methods: {
@@ -90,6 +107,16 @@ export default {
       await this.$router.push('/');
       this.isModalShow = false;
       this.$router.go(0)
+    },
+    async deleteApp() {
+      const currentAppId = window.sessionStorage.getItem('APP_DISTRIBUTE_CURRENT_APP_ID');
+      await this.$axios.delete(`app?appId=${currentAppId}`);
+      const { data: apps } = await this.$axios.$get('app');
+      this.apps = apps;
+    },
+    showRemoveAppModal(appId) {
+      window.sessionStorage.setItem('APP_DISTRIBUTE_CURRENT_APP_ID', appId);
+      this.isDelModalShow = true;
     },
     showAddAppModal() {
       this.isModalShow = true;

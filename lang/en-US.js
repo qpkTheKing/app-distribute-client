@@ -72,5 +72,8 @@ export default {
   YES: 'Yes',
   NO: 'No',
   DOWNLOAD_TIP_UNABLE_DOWNLOAD: 'Unable to download',
-  DOWNLOAD_TIP_DESC: 'Please contact the app seller to buy more traffic.'
+  DOWNLOAD_TIP_DESC: 'Please contact the app seller to buy more traffic.',
+  DIALOG_DELETE_TITLE: 'Delete App',
+  DIALOG_DELETE_CONTENT: 'Are you sure want to delete this app?',
+  PKG_BTN_DELETE: 'Delete'
 }

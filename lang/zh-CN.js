@@ -72,5 +72,8 @@ export default {
   YES: '是',
   NO: '否',
   DOWNLOAD_TIP_UNABLE_DOWNLOAD: '无法下载',
-  DOWNLOAD_TIP_DESC: '请联系应用开发商购买更多流量.'
+  DOWNLOAD_TIP_DESC: '请联系应用开发商购买更多流量.',
+  DIALOG_DELETE_TITLE: '确认删除',
+  DIALOG_DELETE_CONTENT: '确实要删除当前选中的APP吗?',
+  PKG_BTN_DELETE: '删除'
 }
