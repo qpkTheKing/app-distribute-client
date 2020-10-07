@@ -1,20 +1,45 @@
 <template>
   <article class="tfs-article">
     <h1 v-if="!fileUploaded && !fileDbId">{{ appData.name }}</h1>
-    <hr v-if="!fileUploaded && !fileDbId">
-    <Alert type="success" v-if="fileUploaded && formData.phone === 'android'" class="mt20">
+    <hr v-if="!fileUploaded && !fileDbId" />
+    <Alert
+      type="success"
+      v-if="fileUploaded && formData.phone === 'android'"
+      class="mt20"
+    >
       {{ $t('PKG_TIP_AFTER_UPLOAD') }}
     </Alert>
-    <Alert type="success" v-if="fileUploaded && formData.phone === 'apple'" class="mt20">
+    <Alert
+      type="success"
+      v-if="fileUploaded && formData.phone === 'apple'"
+      class="mt20"
+    >
       mobileconfig文件上传成功，请提交.
     </Alert>
-    <Alert type="warning" v-if="fileDbId && fileData.fType !== 'mobile-config'" class="mt20">
+    <Alert
+      type="warning"
+      v-if="fileDbId && fileData.fType !== 'mobile-config'"
+      class="mt20"
+    >
       {{ $t('PKG_TIP_UPLOAD') }}
     </Alert>
-    <Row v-if="fileUploaded && formData.phone === 'android'" class="tfs-app-mata-row-new">
+    <Row
+      v-if="fileUploaded && formData.phone === 'android'"
+      class="tfs-app-mata-row-new"
+    >
       <Col span="5">
-        <img :src="appMetaData.icon" alt="" width="100" v-if="appMetaData.icon" />
-        <img src="~assets/photos-app-icon-big.png" alt="" width="100" v-if="!appMetaData.icon" />
+        <img
+          :src="appMetaData.icon"
+          alt=""
+          width="100"
+          v-if="appMetaData.icon"
+        />
+        <img
+          src="~assets/photos-app-icon-big.png"
+          alt=""
+          width="100"
+          v-if="!appMetaData.icon"
+        />
       </Col>
       <Col span="12" style="line-height: 26px;">
         <Row>{{ formData.fileName }}</Row>
@@ -25,22 +50,40 @@
       <Col span="7" style="text-align: right;">
         <Row>
           <Col span="24">
-            <Button @click="reset" :loading="loading" :disabled="!fileUploaded" style="width: 90%;height: 40px;">重新上传
+            <Button
+              @click="reset"
+              :loading="loading"
+              :disabled="!fileUploaded"
+              style="width: 90%; height: 40px;"
+              >重新上传
             </Button>
           </Col>
         </Row>
       </Col>
     </Row>
-    <Row v-if="fileDbId && fileData.fType !== 'mobile-config'" class="tfs-app-mata-row">
+    <Row
+      v-if="fileDbId && fileData.fType !== 'mobile-config'"
+      class="tfs-app-mata-row"
+    >
       <Col span="5">
         <img :src="fileData.icon" alt="" width="100" v-if="fileData.icon" />
         <img :src="appData.icon" alt="" width="100" v-if="!fileData.icon" />
       </Col>
       <Col span="12" style="line-height: 26px;">
         <Row>{{ fileData.name }}</Row>
-        <Row>ID: {{ fileData.applicationId ? fileData.applicationId : appData.applicationId }}</Row>
+        <Row
+          >ID:
+          {{
+            fileData.applicationId
+              ? fileData.applicationId
+              : appData.applicationId
+          }}</Row
+        >
         <Row>{{ $t('PKG_SIZE') }}: {{ _formatBytes(fileData.size) }}</Row>
-        <Row>{{ $t('PKG_VERSION') }}: {{ fileData.version ? fileData.version : appData.version }}</Row>
+        <Row
+          >{{ $t('PKG_VERSION') }}:
+          {{ fileData.version ? fileData.version : appData.version }}</Row
+        >
       </Col>
     </Row>
     <div class="tfs-form-wrapper" v-if="!fileDbId">
@@ -68,28 +111,34 @@
               type="drag"
               :accept="formData.accept"
               :before-upload="handleFileUpload"
-              action="">
-              <div style="padding: 20px 0">
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+              action=""
+            >
+              <div style="padding: 20px 0;">
+                <Icon
+                  type="ios-cloud-upload"
+                  size="52"
+                  style="color: #3399ff;"
+                ></Icon>
                 <p>{{ $t('PKG_UPLOAD_TIP') }}</p>
               </div>
             </Upload>
           </Form-item>
           <Form-item :label="$t('PKG_UPLOAD_SPEED')">
-            <Alert type="info">
-              {{ uploadSpeed }} - {{ bytesUploaded }}
-            </Alert>
+            <Alert type="info"> {{ uploadSpeed }} - {{ bytesUploaded }} </Alert>
           </Form-item>
           <Form-item :label="$t('PKG_UPLOAD_PROGRESS')">
             <Alert type="info">
-              <Progress :percent="formData.uploadProgress" status="active"></Progress>
+              <Progress
+                :percent="formData.uploadProgress"
+                status="active"
+              ></Progress>
             </Alert>
           </Form-item>
         </div>
         <Form-item :label="$t('PKG_ENABLED')" v-if="fileUploaded">
           <Radio-group v-model="forDownload">
-            <Radio label="T">是</Radio>
-            <Radio label="F">否</Radio>
+            <Radio label="TRUE">{{ $t('YES') }}</Radio>
+            <Radio label="FALSE">{{ $t('NO') }}</Radio>
           </Radio-group>
         </Form-item>
         <Form-item label="应用截图:" v-if="false">
@@ -97,7 +146,7 @@
             ref="upload"
             :show-upload-list="false"
             :default-file-list="defaultList"
-            :format="['jpg','jpeg','png']"
+            :format="['jpg', 'jpeg', 'png']"
             :max-size="2048"
             :on-format-error="handleFormatError"
             :on-exceeded-size="handleMaxSize"
@@ -105,20 +154,31 @@
             multiple
             type="drag"
             action=""
-            style="display: inline-block;width:58px;">
-            <div style="width: 58px;height:58px;line-height: 58px;">
+            style="display: inline-block; width: 58px;"
+          >
+            <div style="width: 58px; height: 58px; line-height: 58px;">
               <Icon type="ios-camera" size="20"></Icon>
             </div>
           </Upload>
         </Form-item>
         <Form-item :label="$t('PKG_DESCRIPTION')">
-          <Input v-model="appDescription" :rows="4" type="textarea" placeholder="" />
+          <Input
+            v-model="appDescription"
+            :rows="4"
+            type="textarea"
+            placeholder=""
+          />
         </Form-item>
         <!--        <Form-item label="下载模板:" v-if="fileUploaded">-->
         <!--          <Input type="text" placeholder="待实现" readonly disabled/>-->
         <!--        </Form-item>-->
         <Form-item v-if="!fileDbId">
-          <Button type="primary" @click="handleSubmit(appData)" :loading="loading" :disabled="!fileUploaded">
+          <Button
+            type="primary"
+            @click="handleSubmit(appData)"
+            :loading="loading"
+            :disabled="!fileUploaded"
+          >
             {{ $t('SUBMIT') }}
           </Button>
         </Form-item>
@@ -126,11 +186,13 @@
     </div>
     <div class="tfs-form-wrapper" v-if="fileDbId">
       <Form :model="formData" :label-width="80">
-        <Form-item :label="`${$t('PKG_PLATFORM')}:`">{{ fileData.fType !== 'mobile-config' ? 'Android' : 'IOS-PWA' }}</Form-item>
+        <Form-item :label="`${$t('PKG_PLATFORM')}:`">{{
+          fileData.fType !== 'mobile-config' ? 'Android' : 'IOS-PWA'
+        }}</Form-item>
         <Form-item :label="`${$t('PKG_ENABLED')}:`">
-          <Radio-group v-model="forDownload" :value="fileData.forDownload === 'TRUE' ? 'T' : 'F'">
-            <Radio label="T">{{ $t('YES') }}</Radio>
-            <Radio label="F">{{ $t('NO') }}</Radio>
+          <Radio-group v-model="forDownload">
+            <Radio label="TRUE">{{ $t('YES') }}</Radio>
+            <Radio label="FALSE">{{ $t('NO') }}</Radio>
           </Radio-group>
         </Form-item>
         <Form-item label="应用截图:" v-if="false">
@@ -138,7 +200,7 @@
             ref="upload"
             :show-upload-list="false"
             :default-file-list="defaultList"
-            :format="['jpg','jpeg','png']"
+            :format="['jpg', 'jpeg', 'png']"
             :max-size="2048"
             :on-format-error="handleFormatError"
             :on-exceeded-size="handleMaxSize"
@@ -146,48 +208,75 @@
             multiple
             type="drag"
             action=""
-            style="display: inline-block;width:58px;">
-            <div style="width: 58px;height:58px;line-height: 58px;">
+            style="display: inline-block; width: 58px;"
+          >
+            <div style="width: 58px; height: 58px; line-height: 58px;">
               <Icon type="ios-camera" size="20"></Icon>
             </div>
           </Upload>
         </Form-item>
         <Form-item :label="`${$t('PKG_DESCRIPTION')}:`">
-          <Input v-model="appDescription" :value="fileData.description" :rows="4" type="textarea" placeholder="" />
+          <Input
+            v-model="appDescription"
+            :value="fileData.description"
+            :rows="4"
+            type="textarea"
+            placeholder=""
+          />
         </Form-item>
         <Form-item label="下载模板:" v-if="fileUploaded">
-          <Input v-model="appDescription" type="text" placeholder="待实现" readonly disabled />
+          <Input
+            v-model="appDescription"
+            type="text"
+            placeholder="待实现"
+            readonly
+            disabled
+          />
         </Form-item>
         <div v-if="!fileUploaded">
           <Form-item :label="`${$t('PKG_FILE')}:`">
             <Upload
-              :accept="fileData.fType !== 'mobile-config' ? '.apk' : '.mobileconfig'"
+              :accept="
+                fileData.fType !== 'mobile-config' ? '.apk' : '.mobileconfig'
+              "
               type="drag"
               :before-upload="handleFileUpload"
-              action="">
-              <div style="padding: 20px 0">
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+              action=""
+            >
+              <div style="padding: 20px 0;">
+                <Icon
+                  type="ios-cloud-upload"
+                  size="52"
+                  style="color: #3399ff;"
+                ></Icon>
                 <p>{{ $t('PKG_UPLOAD_TIP') }}</p>
               </div>
             </Upload>
           </Form-item>
           <Form-item :label="`${$t('PKG_UPLOAD_SPEED')}:`">
-            <Alert type="info">
-              {{ uploadSpeed }} - {{ bytesUploaded }}
-            </Alert>
+            <Alert type="info"> {{ uploadSpeed }} - {{ bytesUploaded }} </Alert>
           </Form-item>
           <Form-item :label="`${$t('PKG_UPLOAD_PROGRESS')}:`">
             <Alert type="info">
-              <Progress :percent="formData.uploadProgress" status="active"></Progress>
+              <Progress
+                :percent="formData.uploadProgress"
+                status="active"
+              ></Progress>
             </Alert>
           </Form-item>
         </div>
         <Form-item v-if="!fileDbId">
-          <Button type="primary" @click="handleSubmit()" :loading="loading" :disabled="!fileUploaded">{{ $t('SUBMIT') }}
+          <Button
+            type="primary"
+            @click="handleSubmit()"
+            :loading="loading"
+            :disabled="!fileUploaded"
+            >{{ $t('SUBMIT') }}
           </Button>
         </Form-item>
         <Form-item v-if="fileDbId">
-          <Button type="primary" @click="handleSubmit()" :loading="loading">{{ $t('EDIT') }}
+          <Button type="primary" @click="handleSubmit()" :loading="loading"
+            >{{ $t('EDIT') }}
           </Button>
         </Form-item>
       </Form>
@@ -213,24 +302,42 @@ export default {
       fileData = res.data;
     }
 
-    return { appData: appData[0], appId: query.appId, fileDbId: query.fileId, fileData };
+    return {
+      appData: appData[0],
+      appId: query.appId,
+      fileDbId: query.fileId,
+      fileData,
+    };
   },
   middleware: 'auth',
   computed: {
-    ...mapGetters(['loggedInUser'])
+    forDownload: {
+      get: function () {
+        if (this.fileData) {
+          return this.fileData.forDownload ? this.fileData.forDownload : 'TRUE';
+        } else {
+          return 'TRUE';
+        }
+      },
+      set: function (newValue) {
+        console.log(newValue);
+        this.forDownloadSubmit = newValue;
+      },
+    },
+    ...mapGetters(['loggedInUser']),
   },
   data() {
     return {
       appData: {},
       fileData: {},
       fileDbId: '',
+      forDownloadSubmit: '',
       loading: false,
       uploader: null,
       fileUploaded: false,
       submitAllowed: false,
       uploadSpeed: '0 /Mbps',
       bytesUploaded: '0 MB',
-      forDownload: 'T',
       appMetaData: {},
       defaultList: [],
       uploadedList: [],
@@ -242,18 +349,18 @@ export default {
         uploadProgress: 0,
         fileName: '',
         fileSize: '',
-        fileFingerPrint: ''
-      }
+        fileFingerPrint: '',
+      },
     };
   },
   watch: {
-    'formData.phone': function(val) {
+    'formData.phone': function (val) {
       if (val === 'android') {
         this.formData.accept = '.apk';
       } else {
         this.formData.accept = '.mobileconfig';
       }
-    }
+    },
   },
   mounted() {
     this.appDescription = this.fileData ? this.fileData.description : '';
@@ -271,10 +378,13 @@ export default {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     },
     async _getAppPackMeta(pkgHashId, pkgFileName) {
-      const { data } = await this.$axios.$get(`app/pkg?pkgHashId=${pkgHashId}&pkgFileName=${pkgFileName}`);
+      const { data } = await this.$axios.$get(
+        `app/pkg?pkgHashId=${pkgHashId}&pkgFileName=${pkgFileName}`
+      );
       this.appMetaData = data;
     },
     async handleSubmit() {
+      console.log(this.forDownloadSubmit);
       let commonPayload = {};
       if (this.formData.phone === 'android') {
         if (this.appMetaData !== {} && this.formData.fileFingerPrint !== '') {
@@ -287,7 +397,7 @@ export default {
             appId: this.appId,
             appDescription: this.appDescription,
             downloadUrl: `${this.$config.downloadServer}/${this.formData.fileFingerPrint}`,
-            forDownload: this.forDownload === 'T' ? 'TRUE' : 'FALSE'
+            forDownload: this.forDownloadSubmit,
           };
           await this.$axios.$post('app/file', {
             pkgMeta: {
@@ -295,29 +405,33 @@ export default {
               applicationId: this.appMetaData.applicationId,
               versionCode: this.appMetaData.versionCode,
               sha1: this.appMetaData.sha1,
-              icon: this.appMetaData.icon
+              icon: this.appMetaData.icon,
             },
             fileDbId: this.fileDbId,
-            ...commonPayload
+            ...commonPayload,
           });
           this.loading = false;
           this.$Notice.success({
-            title: '应用提交成功，即将跳转应用列表页面.'
+            title: '应用提交成功，即将跳转应用列表页面.',
           });
-          await this.$router.push(this.localePath({ name: 'apps', query: { appId: this.appId } }));
+          await this.$router.push(
+            this.localePath({ name: 'apps', query: { appId: this.appId } })
+          );
         } else {
           await this.$axios.$post('app/file', {
             appId: this.appId,
             fileDbId: this.fileDbId,
             appDescription: this.appDescription,
-            forDownload: this.forDownload === 'T' ? 'TRUE' : 'FALSE',
-            fType: 'apk'
+            forDownload: this.forDownloadSubmit,
+            fType: 'apk',
           });
           this.loading = false;
           this.$Notice.success({
-            title: '应用修改成功，即将跳转应用列表页面.'
+            title: '应用修改成功，即将跳转应用列表页面.',
           });
-          await this.$router.push(this.localePath({ name: 'apps', query: { appId: this.appId } }));
+          await this.$router.push(
+            this.localePath({ name: 'apps', query: { appId: this.appId } })
+          );
         }
       } else {
         commonPayload = {
@@ -325,22 +439,22 @@ export default {
           pkgHashId: this.formData.fileFingerPrint,
           pkgFileName: this.formData.fileName,
           description: this.appDescription,
-          version: this.appMetaData.version
+          version: this.appMetaData.version,
         };
         if (this.formData.fileFingerPrint) {
           await this.$axios.$post('app/mobileConfig', {
             pkgFileId: this.fileDbId,
-            ...commonPayload
+            ...commonPayload,
           });
         } else {
           await this.$axios.$post('app/mobileConfig', {
             pkgFileId: this.fileDbId,
-            description: this.appDescription
+            description: this.appDescription,
           });
         }
         this.loading = false;
         this.$Notice.success({
-          title: '应用修改成功，即将跳转应用列表页面.'
+          title: '应用修改成功，即将跳转应用列表页面.',
         });
         await this.$router.push(`/apps?appId=${this.appId}`);
       }
@@ -367,24 +481,26 @@ export default {
         retryDelays: [0, 3000, 5000, 10000, 20000],
         metadata: {
           filename: file.name,
-          filetype: file.type
+          filetype: file.type,
         },
-        onBeforeRequest: function(req) {
-          startTime = (new Date()).getTime();
+        onBeforeRequest: function (req) {
+          startTime = new Date().getTime();
         },
-        onError: function(error) {
+        onError: function (error) {
           ctx.$Message.error('上传文件出错: ' + error);
         },
-        onProgress: function(bytesUploaded, bytesTotal) {
-          endTime = (new Date()).getTime();
+        onProgress: function (bytesUploaded, bytesTotal) {
+          endTime = new Date().getTime();
           const duration = (endTime - startTime) / 1000;
           const bitsLoaded = bytesUploaded * 8;
-          const speedMbps = ((bitsLoaded / duration) / 1024 / 1024).toFixed(2);
+          const speedMbps = (bitsLoaded / duration / 1024 / 1024).toFixed(2);
           ctx.uploadSpeed = speedMbps + ' /Mbps';
           ctx.bytesUploaded = ctx._formatBytes(bytesUploaded);
-          ctx.formData.uploadProgress = parseFloat(((bytesUploaded / bytesTotal) * 100).toFixed(0));
+          ctx.formData.uploadProgress = parseFloat(
+            ((bytesUploaded / bytesTotal) * 100).toFixed(0)
+          );
         },
-        onSuccess: async function() {
+        onSuccess: async function () {
           ctx.$Message.success('文件上传成功.');
           const fileUrl = new URL(uploader.url);
 
@@ -395,10 +511,13 @@ export default {
           ctx.formData.fileSize = ctx._formatBytes(uploader.file.size);
           ctx.loading = true;
           if (ctx.formData.phone === 'android') {
-            await ctx._getAppPackMeta(ctx.formData.fileFingerPrint, ctx.formData.fileName);
+            await ctx._getAppPackMeta(
+              ctx.formData.fileFingerPrint,
+              ctx.formData.fileName
+            );
           }
           ctx.loading = false;
-        }
+        },
       });
       uploader.start();
       return false;
@@ -406,17 +525,20 @@ export default {
     handleFormatError(file) {
       this.$Notice.warning({
         title: 'The file format is incorrect',
-        desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+        desc:
+          'File format of ' +
+          file.name +
+          ' is incorrect, please select jpg or png.',
       });
     },
     handleMaxSize(file) {
       this.$Notice.warning({
         title: 'Exceeding file size limit',
-        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+        desc: 'File  ' + file.name + ' is too large, no more than 2M.',
       });
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

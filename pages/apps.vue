@@ -5,14 +5,33 @@
         <h1>{{ $t('MY_DISTRIBUTION_APPS') }}</h1>
       </Col>
       <Col span="20" style="text-align: right;">
-        <Button type="primary" icon="md-cloud-upload" v-on:click="navToUpload">{{ $t('NEW_UPLOAD') }}</Button>
+        <span>统一下载地址: </span>
+        <a :href="uniDownload">
+          <span>{{
+            `${$config.client}${localePath({
+              name: 'go',
+              query: { h: appId },
+            })}`
+          }}</span>
+        </a>
+        <Button
+          type="primary"
+          icon="md-cloud-upload"
+          v-on:click="navToUpload"
+          >{{ $t('NEW_UPLOAD') }}</Button
+        >
       </Col>
     </Row>
     <hr />
     <Row style="margin-top: 10px;">
       <Col span="4">
         <Select v-model="platform" disabled placeholder="">
-          <Option v-for="item in allPlatform" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Option
+            v-for="item in allPlatform"
+            :value="item.value"
+            :key="item.value"
+            >{{ item.label }}</Option
+          >
         </Select>
       </Col>
       <Col span="8" style="padding: 0 10px;">
@@ -20,30 +39,71 @@
       </Col>
       <Col span="6" style="text-align: right;">
         <p>{{ $t('DOWNLOAD_QUOTA') }}</p>
-        <p style="font-size: 16px; font-weight: bolder;color: #ff9900;">{{ me.quota }} Mb</p>
+        <p style="font-size: 16px; font-weight: bolder; color: #ff9900;">
+          {{ me.quota }} Mb
+        </p>
       </Col>
       <Col span="6" style="text-align: right;">
         <p>{{ $t('DOWNLOAD_FREE_QUOTA_TODAY') }}</p>
-        <p style="font-size: 16px; font-weight: bolder;color: #ed4014;">0 M</p>
+        <p style="font-size: 16px; font-weight: bolder; color: #ed4014;">0 M</p>
       </Col>
     </Row>
-    <Table :columns="columns" :data="appFiles" :no-data-text="$t('PKG_NOT_FOUND')" :loading="tableLoading">
+    <Table
+      :columns="columns"
+      :data="appFiles"
+      :no-data-text="$t('PKG_NOT_FOUND')"
+      :loading="tableLoading"
+    >
       <template slot-scope="{ row, index }" slot="icon">
         <img :src="row.icon" alt="" width="40" style="margin-top: 5px;" />
       </template>
       <template slot-scope="{ row, index }" slot="forDownload">
-        <div v-if="row.forDownload === 'TRUE'">{{ $t('PKG_CURRENT_STATUS') }}</div>
+        <div v-if="row.forDownload === 'TRUE'">
+          {{ $t('PKG_CURRENT_STATUS') }}
+        </div>
         <template v-else>未启用</template>
       </template>
       <template slot-scope="{ row, index }" slot="downloadUrl">
-        <div :id="`downloadQRCode-${row.hashId}`" style="display: none;" class="qrcodeWrapper"></div>
-        <tooltip placement="top" max-width="500" transfer :content="`${$config.client}${localePath({ name: 'download', query: { file: row.hashId } })}`">
-          <Button size="large" icon="md-link" v-clipboard:copy="`${$config.client}${localePath({ name: 'download', query: { file: row.hashId } })}`"
-                  v-clipboard:success="onCopy"
-                  v-clipboard:error="onError"></Button>
+        <div
+          :id="`downloadQRCode-${row.hashId}`"
+          style="display: none;"
+          class="qrcodeWrapper"
+        ></div>
+        <tooltip
+          placement="top"
+          max-width="500"
+          transfer
+          :content="`${$config.client}${localePath({
+            name: 'download',
+            query: { file: row.hashId },
+          })}`"
+        >
+          <Button
+            size="large"
+            icon="md-link"
+            v-clipboard:copy="
+              `${$config.client}${localePath({
+                name: 'download',
+                query: { file: row.hashId },
+              })}`
+            "
+            v-clipboard:success="onCopy"
+            v-clipboard:error="onError"
+          ></Button>
         </tooltip>
-        <Button size="large" icon="md-qr-scanner"
-                v-on:click="qrCode(`${$config.client}${localePath({ name: 'download', query: { file: row.hashId } })}`, `downloadQRCode-${row.hashId}`)"></Button>
+        <Button
+          size="large"
+          icon="md-qr-scanner"
+          v-on:click="
+            qrCode(
+              `${$config.client}${localePath({
+                name: 'download',
+                query: { file: row.hashId },
+              })}`,
+              `downloadQRCode-${row.hashId}`
+            )
+          "
+        ></Button>
       </template>
     </Table>
   </article>
@@ -54,7 +114,9 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   async asyncData(ctx) {
     const { query, $axios } = ctx;
-    const { data: appFiles } = await $axios.$get(`app/files?appId=${query.appId}`);
+    const { data: appFiles } = await $axios.$get(
+      `app/files?appId=${query.appId}`
+    );
     const { data: me } = await $axios.$get(`me`);
     const { data: appInfo } = await $axios.$get(`app?appId=${query.appId}`);
 
@@ -62,7 +124,13 @@ export default {
   },
   middleware: 'auth',
   computed: {
-    ...mapGetters(['loggedInUser'])
+    uniDownload: function () {
+      return `${this.$config.client}${this.localePath({
+        name: 'go',
+        query: { h: this.appId },
+      })}`;
+    },
+    ...mapGetters(['loggedInUser']),
   },
   data() {
     return {
@@ -71,47 +139,48 @@ export default {
       tableLoading: false,
       appFiles: [],
       clipboard: {
-        message: '复制成功'
+        message: '复制成功',
       },
       allPlatform: [
         {
           value: 'Android',
-          label: '适配安卓机型'
+          label: '适配安卓机型',
         },
         {
           value: 'ios',
-          label: '适配苹果机型 '
+          label: '适配苹果机型 ',
         },
         {
           value: 'WPhone',
-          label: '适配Windows Phone'
-        }],
+          label: '适配Windows Phone',
+        },
+      ],
       columns: [
         {
           title: `${this.$t('PKG_ICON')}`,
           slot: 'icon',
-          width: '120'
+          width: '120',
         },
         {
           title: `${this.$t('PKG_NAME')}`,
           key: 'name',
-          tooltip: true
+          tooltip: true,
         },
         {
           title: `${this.$t('PKG_VISITED')}`,
           align: 'center',
           key: 'downloadTimes',
-          width: '110'
+          width: '110',
         },
         {
           title: `${this.$t('PKG_DOWNLOAD_LINK')}/${this.$t('PKG_QRCODE')}`,
           align: 'center',
-          slot: 'downloadUrl'
+          slot: 'downloadUrl',
         },
         {
           title: `${this.$t('PKG_STATUS')}`,
           slot: 'forDownload',
-          width: '110'
+          width: '110',
         },
         {
           title: `${this.$t('PKG_OPERATION')}`,
@@ -121,70 +190,92 @@ export default {
           render: (h, params) => {
             const { row } = params;
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'success',
-                  size: 'small'
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'success',
+                    size: 'small',
+                  },
+                  style: {
+                    marginRight: '5px',
+                  },
+                  on: {
+                    click: () => {
+                      const fileUrl = this.localePath({
+                        name: 'download',
+                        query: { file: row.hashId },
+                      });
+                      window.open(`${this.$config.client}${fileUrl}`, '_blank');
+                    },
+                  },
                 },
-                style: {
-                  marginRight: '5px'
+                `${this.$t('PKG_BTN_PREVIEW')}`
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'warning',
+                    size: 'small',
+                  },
+                  style: {
+                    marginRight: '5px',
+                  },
+                  on: {
+                    click: () => {
+                      const { _id } = row;
+                      this.changeFileId(_id);
+                      this.changeRoute('upload');
+                      const url = this.localePath({
+                        name: 'upload',
+                        query: { appId: this.appId, fileId: _id },
+                      });
+                      this.$router.push(url);
+                    },
+                  },
                 },
-                on: {
-                  click: () => {
-                    const fileUrl = this.localePath({ name: 'download', query: { file: row.hashId } });
-                    window.open(`${this.$config.client}${fileUrl}`, '_blank');
-                  }
-                }
-              }, `${this.$t('PKG_BTN_PREVIEW')}`),
-              h('Button', {
-                props: {
-                  type: 'warning',
-                  size: 'small'
+                `${this.$t('PKG_BTN_UPDATE')}`
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'info',
+                    size: 'small',
+                  },
+                  on: {
+                    click: () => {
+                      const { hashId } = row;
+                      this._download(hashId);
+                    },
+                  },
                 },
-                style: {
-                  marginRight: '5px'
+                `${this.$t('PKG_BTN_DOWNLOAD')}`
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'error',
+                    size: 'small',
+                  },
+                  style: {
+                    marginLeft: '5px',
+                  },
+                  on: {
+                    click: () => {
+                      const { hashId } = row;
+                      this.onDelete(hashId);
+                    },
+                  },
                 },
-                on: {
-                  click: () => {
-                    const { _id } = row;
-                    this.changeFileId(_id);
-                    this.changeRoute('upload');
-                    const url = this.localePath({ name: 'upload', query: { appId: this.appId, fileId: _id } });
-                    this.$router.push(url);
-                  }
-                }
-              }, `${this.$t('PKG_BTN_UPDATE')}`),
-              h('Button', {
-                props: {
-                  type: 'info',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    const { hashId } = row;
-                    this._download(hashId);
-                  }
-                }
-              }, `${this.$t('PKG_BTN_DOWNLOAD')}`),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                style: {
-                  marginLeft: '5px'
-                },
-                on: {
-                  click: () => {
-                    const { hashId } = row;
-                    this.onDelete(hashId);
-                  }
-                }
-              }, `${this.$t('PKG_BTN_DELETE')}`)
+                `${this.$t('PKG_BTN_DELETE')}`
+              ),
             ]);
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -192,7 +283,7 @@ export default {
       this.$Notice.success({
         top: 50,
         title: `${this.$t('APP_DOWNLOAD_BEGIN')}`,
-        desc: `${this.$t('APP_DOWNLOAD_TIP')}`
+        desc: `${this.$t('APP_DOWNLOAD_TIP')}`,
       });
       const link = document.createElement('a');
       link.href = `${this.$config.downloadServer}/${fileHash}`;
@@ -202,28 +293,33 @@ export default {
     async onDelete(hashId) {
       this.tableLoading = true;
       await this.$axios.delete(`app?appId=${this.appId}&hashId=${hashId}`);
-      const { data: appFiles } = await this.$axios.$get(`app/files?appId=${this.appId}`);
+      const { data: appFiles } = await this.$axios.$get(
+        `app/files?appId=${this.appId}`
+      );
       this.appFiles = appFiles;
       this.tableLoading = false;
     },
     ...mapMutations({
       changeRoute: 'global/changeRoute',
       changeFileId: 'global/changeFileId',
-      changeRole: 'global/setCurrentRole'
+      changeRole: 'global/setCurrentRole',
     }),
-    onCopy: function(e) {
+    onCopy: function (e) {
       this.$Message.success(`${this.$t('APP_URL_COPY')}!`);
     },
-    onError: function(e) {
+    onError: function (e) {
       // this.$Message.error(`复制到剪切板出现问题，请检查浏览器设置.`)
     },
     navToUpload() {
-      this.$router.push(this.localePath({ name: 'upload', query: { appId: this.appId } }));
+      this.$router.push(
+        this.localePath({ name: 'upload', query: { appId: this.appId } })
+      );
     },
     qrCode(url, elementId) {
       const element = document.getElementById(elementId);
       this.$nextTick(() => {
-        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        element.style.display =
+          element.style.display === 'none' ? 'block' : 'none';
         element.innerHTML = '';
         new window.QRCode(elementId, {
           text: url,
@@ -231,12 +327,12 @@ export default {
           height: 100,
           colorDark: '#000000',
           colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.H
+          correctLevel: QRCode.CorrectLevel.H,
         });
       });
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 <style scoped>

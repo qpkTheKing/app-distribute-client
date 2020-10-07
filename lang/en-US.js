@@ -75,5 +75,6 @@ export default {
   DOWNLOAD_TIP_DESC: 'Please contact the app seller to buy more traffic.',
   DIALOG_DELETE_TITLE: 'Delete App',
   DIALOG_DELETE_CONTENT: 'Are you sure want to delete this app?',
-  PKG_BTN_DELETE: 'Delete'
+  PKG_BTN_DELETE: 'Delete',
+  NO_PACKAGE_DOWNLOAD: 'There is no available package for download, please contact the brand to modify the settings.',
 }
