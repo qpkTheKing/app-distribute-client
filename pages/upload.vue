@@ -442,6 +442,7 @@ export default {
           pkgFileName: this.formData.fileName,
           description: this.appDescription,
           version: this.appMetaData.version,
+          forDownload: this.forDownloadSubmit,
         };
         if (this.formData.fileFingerPrint) {
           await this.$axios.$post('app/mobileConfig', {
@@ -458,7 +459,9 @@ export default {
         this.$Notice.success({
           title: '应用修改成功，即将跳转应用列表页面.',
         });
-        await this.$router.push(`/apps?appId=${this.appId}`);
+        await this.$router.push(
+          this.localePath({ name: 'apps', query: { appId: this.appId } })
+        );
       }
     },
     reset() {
