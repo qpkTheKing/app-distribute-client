@@ -4,14 +4,14 @@
     <hr v-if="!fileUploaded && !fileDbId" />
     <Alert
       type="success"
-      v-if="fileUploaded && formData.phone === 'android'"
+      v-if="fileUploaded && platform === 'android'"
       class="mt20"
     >
       {{ $t('PKG_TIP_AFTER_UPLOAD') }}
     </Alert>
     <Alert
       type="success"
-      v-if="fileUploaded && formData.phone === 'apple'"
+      v-if="fileUploaded && platform === 'apple'"
       class="mt20"
     >
       mobileconfig文件上传成功，请提交.
@@ -24,7 +24,7 @@
       {{ $t('PKG_TIP_UPLOAD') }}
     </Alert>
     <Row
-      v-if="fileUploaded && formData.phone === 'android'"
+      v-if="fileUploaded && platform === 'android'"
       class="tfs-app-mata-row-new"
     >
       <Col span="5">
@@ -89,7 +89,7 @@
     <div class="tfs-form-wrapper" v-if="!fileDbId">
       <Form :model="formData" :label-width="80">
         <Form-item :label="$t('PKG_PLATFORM')" v-if="!fileUploaded">
-          <RadioGroup v-model="formData.phone">
+          <RadioGroup v-model="platform">
             <Radio label="apple" style="font-size: 14px;">
               <Icon type="logo-apple"></Icon>
               <span>Apple</span>
@@ -100,7 +100,7 @@
             </Radio>
           </RadioGroup>
         </Form-item>
-        <div v-if="formData.phone === 'apple'">
+        <div v-if="platform === 'apple'">
           <Form-item :label="$t('PKG_VERSION')">
             <Input v-model="formData.version" />
           </Form-item>
@@ -311,9 +311,20 @@ export default {
   },
   middleware: 'auth',
   computed: {
+    platform: {
+      get: function () {
+        if (this.fileData) {
+          return this.fileData.fType === 'mobile-config' ? 'apple' : 'android';
+        } else {
+          return 'android';
+        }
+      },
+      set: function (newVal) {
+        this.fileType = newVal;
+      },
+    },
     forDownload: {
       get: function () {
-        console.log('forDownload');
         if (this.fileData) {
           return this.fileData.forDownload
             ? this.fileData.forDownload
@@ -323,7 +334,6 @@ export default {
         }
       },
       set: function (newValue) {
-        console.log(newValue);
         this.forDownloadSubmit = newValue;
       },
     },
@@ -331,6 +341,7 @@ export default {
   },
   data() {
     return {
+      fileType: '',
       appData: {},
       fileData: {},
       fileDbId: '',
@@ -388,7 +399,7 @@ export default {
     },
     async handleSubmit() {
       let commonPayload = {};
-      if (this.formData.phone === 'android') {
+      if (this.fileType === 'android') {
         if (this.appMetaData !== {} && this.formData.fileFingerPrint !== '') {
           this.loading = true;
           commonPayload = {
@@ -453,6 +464,7 @@ export default {
           await this.$axios.$post('app/mobileConfig', {
             pkgFileId: this.fileDbId,
             description: this.appDescription,
+            forDownload: this.forDownloadSubmit,
           });
         }
         this.loading = false;
