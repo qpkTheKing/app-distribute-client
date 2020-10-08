@@ -24,7 +24,7 @@
       {{ $t('PKG_TIP_UPLOAD') }}
     </Alert>
     <Row
-      v-if="fileUploaded && platform === 'android'"
+      v-if="fileUploaded && fileType === 'android'"
       class="tfs-app-mata-row-new"
     >
       <Col span="5">
@@ -368,7 +368,7 @@ export default {
     };
   },
   watch: {
-    'formData.phone': function (val) {
+    fileType: function (val) {
       if (val === 'android') {
         this.formData.accept = '.apk';
       } else {
@@ -527,7 +527,7 @@ export default {
           ctx.formData.fileName = uploader.file.name;
           ctx.formData.fileSize = ctx._formatBytes(uploader.file.size);
           ctx.loading = true;
-          if (ctx.platform === 'android') {
+          if (ctx.fileType === 'android') {
             await ctx._getAppPackMeta(
               ctx.formData.fileFingerPrint,
               ctx.formData.fileName
