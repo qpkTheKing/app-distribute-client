@@ -313,10 +313,13 @@ export default {
   computed: {
     forDownload: {
       get: function () {
+        console.log('forDownload');
         if (this.fileData) {
-          return this.fileData.forDownload ? this.fileData.forDownload : 'TRUE';
+          return this.fileData.forDownload
+            ? this.fileData.forDownload
+            : 'FALSE';
         } else {
-          return 'TRUE';
+          return '';
         }
       },
       set: function (newValue) {
