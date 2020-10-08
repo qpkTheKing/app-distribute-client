@@ -527,7 +527,7 @@ export default {
           ctx.formData.fileName = uploader.file.name;
           ctx.formData.fileSize = ctx._formatBytes(uploader.file.size);
           ctx.loading = true;
-          if (ctx.formData.phone === 'android') {
+          if (ctx.platform === 'android') {
             await ctx._getAppPackMeta(
               ctx.formData.fileFingerPrint,
               ctx.formData.fileName
