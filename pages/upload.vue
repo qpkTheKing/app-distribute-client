@@ -387,7 +387,6 @@ export default {
       this.appMetaData = data;
     },
     async handleSubmit() {
-      console.log(this.forDownloadSubmit);
       let commonPayload = {};
       if (this.formData.phone === 'android') {
         if (this.appMetaData !== {} && this.formData.fileFingerPrint !== '') {
@@ -396,7 +395,7 @@ export default {
             hashId: this.formData.fileFingerPrint,
             size: uploader.file.size,
             fileName: this.formData.fileName,
-            type: 'apk',
+            fType: 'apk',
             appId: this.appId,
             appDescription: this.appDescription,
             downloadUrl: `${this.$config.downloadServer}/${this.formData.fileFingerPrint}`,
