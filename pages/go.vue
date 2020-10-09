@@ -135,7 +135,7 @@ export default {
   },
   mounted() {
     const url = this.localePath({
-      name: 'download',
+      name: 'go',
       query: { h: this.appId },
     });
     const downloadUrl = `${this.$config.client}${url}`;
