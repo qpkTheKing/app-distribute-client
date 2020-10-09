@@ -316,7 +316,7 @@ export default {
         if (this.fileData) {
           return this.fileData.fType === 'mobile-config' ? 'apple' : 'android';
         } else {
-          return 'android';
+          return '';
         }
       },
       set: function (newVal) {
@@ -522,12 +522,14 @@ export default {
           const fileUrl = new URL(uploader.url);
 
           const { pathname } = fileUrl;
+          const defaultPlatform = ctx.fileType ? ctx.fileType : ctx.platform;
           ctx.fileUploaded = true;
           ctx.formData.fileFingerPrint = pathname.split('/')[2];
           ctx.formData.fileName = uploader.file.name;
           ctx.formData.fileSize = ctx._formatBytes(uploader.file.size);
           ctx.loading = true;
-          if (ctx.fileType === 'android') {
+
+          if (defaultPlatform === 'android') {
             await ctx._getAppPackMeta(
               ctx.formData.fileFingerPrint,
               ctx.formData.fileName
