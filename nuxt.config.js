@@ -9,7 +9,7 @@ export default {
   },
   publicRuntimeConfig: {
     // client: 'http://192.168.254.116',
-    client: 'http://149.28.28.240/',
+    client: 'http://149.28.28.240',
     // downloadServer: 'http://localhost:1080/files',
     downloadServer: 'http://149.28.28.240:1080/files',
     socketServer: 'http://149.28.28.240:4000'
