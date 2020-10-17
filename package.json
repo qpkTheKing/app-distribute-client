@@ -20,7 +20,8 @@
     "qrcodejs2": "^0.0.2",
     "qs": "^6.9.4",
     "tus-js-client": "^2.1.1",
-    "vue-clipboard2": "^0.3.1"
+    "vue-clipboard2": "^0.3.1",
+    "vueperslides": "^2.10.8"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.0",

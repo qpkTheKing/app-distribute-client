@@ -71,9 +71,39 @@ html {
   border-radius: 6px 6px 0 0;
 }
 
+.step-container {
+  background: #eee;
+  padding: 20px;
+}
+
+.step-container img {
+  width: 38px;
+}
+
+.c-text {
+  position: relative;
+  bottom: 15px;
+  font-size: 22px;
+  margin-left: 10px;
+}
+
+.ivu-radio-group-vertical .ivu-radio-wrapper {
+  display: block;
+  height: 60px;
+}
+.ivu-radio {
+  bottom: 20px;
+  margin-right: 10px;
+}
+
 @media (max-width: 767px) {
   .tfs-sale-main-content {
     margin: 20px 10px;
+  }
+
+  .tfs-sale-footer {
+    margin: 10px;
+    padding: 0;
   }
 
   .hidden-sm {
@@ -87,11 +117,30 @@ html {
   .tCenter-sm {
     text-align: center;
   }
+
+  .resp-image {
+    width: 100% !important;
+    height: 100%;
+  }
 }
 
 @media (min-width: 768px) {
   .tfs-sale-inner-layout {
-    width: 99% !important;
+    width: 90% !important;
+  }
+
+  .vueperslide, .vueperslide__image {
+    text-align: center;
+  }
+
+  .resp-image {
+    width: 50% !important;
+    height: 100%;
+  }
+
+  .tfs-sale-footer {
+    margin: 10px 50px;
+    padding: 0;
   }
 
   .tfs-sale-main-content {
