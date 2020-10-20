@@ -62,7 +62,7 @@ html {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
-.tfs-i18n-container {
+.tfs-download-inner-layout .tfs-i18n-container {
   padding: .5rem;
   background: rgba(45,140,240,.2);
   border-radius: 6px 6px 0 0;
