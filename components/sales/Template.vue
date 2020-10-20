@@ -1,49 +1,45 @@
 <template>
   <div class="step-container">
     <Card :bordered="false">
-      <div slot="title">当前选择模板: <span style="font-size: 36px; color:#ed4014;">{{ selectedTheme.title }}</span></div>
-      <div class="recommended-template" v-if="!chooseOther">
-        <Tabs type="card">
-          <TabPane label="网页端">
-            <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-              <vueper-slide v-for="(desktopImg, i) in selectedTheme.images.desktop" :key="`${selectedTheme.title}-desktop-${selectedTheme.showcase}-${i}`">
-                <template v-slot:content>
-                  <img :src="desktopImg" alt="" style="width:100%; height:100%;"/>
-                </template>
-              </vueper-slide>
-            </vueper-slides>
-          </TabPane>
-          <TabPane label="手机端">
-            <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-              <vueper-slide v-for="(mobileImg, i) in selectedTheme.images.mobile" :key="`${selectedTheme.title}-desktop-${selectedTheme.showcase}-${i}`">
-                <template v-slot:content>
-                  <img :src="mobileImg" alt="" class="resp-image"/>
-                </template>
-              </vueper-slide>
-            </vueper-slides>
-          </TabPane>
-        </Tabs>
+      <div slot="title">当前选择模板: <span style="font-size: 36px; color:#ed4014;">{{ selectedTemplate.title }}</span></div>
+      <div class="recommended-template" v-if="showSelected">
+        <TemplatePreview :template="selectedTemplate" />
       </div>
-      <div class="all-templates" v-else>
+      <div class="all-templates" v-if="showAllTemplate">
         <Row :gutter="16">
-          <Col :xs="24" :sm="24" :md="6" :lg="6" v-for="theme in themeImages" style="margin:10px 0;" :key="theme.title">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" v-for="template in allTemplate" style="margin:10px 0;" :key="template.title">
             <Card>
-              <p slot="title">{{ theme.title }}</p>
+              <p slot="title">{{ template.title }}</p>
               <div>
                 <a v-on:click="enlarge">
-                  <img :src="theme.showcase" alt="" style="width: 100%" />
+                  <img :src="template.showcase" alt="" style="width: 100%" />
                 </a>
                 <Divider dashed />
-                <Button size="large" type="success" long v-on:click="confirmTheme(theme.title)">选择</Button>
+                <Button size="large" type="success" long v-on:click="preview(template.title)">预览</Button>
               </div>
             </Card>
           </Col>
         </Row>
       </div>
+      <div v-if="showPreview">
+        <Tabs type="card" closable @on-tab-remove="handleTabRemove">
+          <TabPane v-for="preview in previewTemplates" :label="preview.title">
+            <TemplatePreview :template="preview" />
+            <Row :gutter="16" style="margin-top: 5px;">
+              <Col :xs="24" :sm="24" :md="12" :lg="12" style="margin-top: 5px;">
+                <Button size="large" type="info" v-on:click="goLookMore" long>返回预览</Button>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12" style="margin-top: 5px;">
+                <Button size="large" type="success" v-on:click="chooseTemplate(preview.title)" long>我要这个主题</Button>
+              </Col>
+            </Row>
+          </TabPane>
+        </Tabs>
+      </div>
       <Row style="margin-top: 15px;">
         <Col span="24">
-          <Button size="large" type="success" long v-if="!chooseOther" v-on:click="goLookMore">不满意? 查看更多模板样例.</Button>
-          <Button size="large" type="primary" long v-else v-on:click="goBack">返回</Button>
+          <Button size="large" type="success" long v-on:click="goLookMore" v-if="showSelected">不满意? 查看更多模板样例.</Button>
+          <Button size="large" type="primary" long v-on:click="goBack" v-if="!showSelected">返回</Button>
         </Col>
       </Row>
     </Card>
@@ -52,39 +48,76 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import { VueperSlides, VueperSlide } from 'vueperslides';
-import 'vueperslides/dist/vueperslides.css'
+import TemplatePreview from '@/components/sales/TemplatePreview';
 
 export default {
   props: ['title'],
-  components: { VueperSlides, VueperSlide },
+  components: { TemplatePreview },
   computed: {
     ...mapGetters({
-      themeImages: 'sale/getAllTemplates',
-      selectedTheme: 'sale/getTemplate'
+      allTemplate: 'sale/getAllTemplates',
+      selectedTemplate: 'sale/getTemplate'
     })
   },
   data() {
     return {
-      chooseOther: false,
-      selected: ''
+      selected: '',
+      showSelected: true,
+      showPreview: false,
+      showAllTemplate: false,
+      previewTemplates: []
     };
   },
   mounted() {
+    console.log()
+    const exists = this.previewTemplates.filter(template => {
+      return template.title === this.selectedTemplate.title;
+    });
+    if (exists && exists.length > 0) {
+      // do nothing when template is already exists.
+    } else {
+      this.previewTemplates.push(this.selectedTemplate);
+    }
   },
   methods: {
     enlarge(e) {
       e.preventDefault();
     },
-    confirmTheme(theme) {
-      this.setTemplate(theme);
-      this.chooseOther = false;
+    preview(theme) {
+      const selected = this.allTemplate.filter(template => {
+        return template.title === theme;
+      })[0];
+      const exists = this.previewTemplates.filter(template => {
+        return template.title === theme;
+      });
+      if (exists && exists.length > 0) {
+        this.previewTemplates.reverse();
+      } else {
+        this.previewTemplates.push(selected);
+        this.previewTemplates.reverse();
+      }
+      this.showPreview = true;
+      this.showAllTemplate = false;
+      this.showSelected = false;
+    },
+    chooseTemplate(template) {
+      this.setTemplate(template);
+      this.showPreview = false;
+      this.showAllTemplate = false;
+      this.showSelected = true;
     },
     goLookMore() {
-      this.chooseOther = true;
+      this.showAllTemplate = true;
+      this.showSelected = false;
+      this.showPreview = false;
     },
     goBack() {
-      this.chooseOther = false;
+      this.showPreview = false;
+      this.showAllTemplate = false;
+      this.showSelected = true;
+    },
+    handleTabRemove() {
+
     },
     ...mapMutations({
       setTemplate: 'sale/setTemplate'

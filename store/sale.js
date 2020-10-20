@@ -5,21 +5,25 @@ export const state = () => ({
   selectedTheme: '',
   steps: [
     {
-      title: '请选择用户面向市场',
-      content: '可以选择多个',
+      title: '用户面向市场',
+      content: '请至少选择一项',
+      key: 'selectedMarket'
     },
     {
-      title: '请选择主推产品',
-      content: '可以选择多个',
+      title: '主推产品',
+      content: '请至少选择一项',
+      key: 'selectedProduct'
     },
     {
-      title: '请选择主题颜色',
-      content: '可以选择多个',
+      title: '主题色系',
+      content: '请至少选择一项',
+      key: 'selectedTheme'
     },
     {
-      title: '请选择模板',
+      title: '网站模板',
       content: '手机端和PC端',
-    },
+      key: 'selected'
+    }
   ],
   templates: [
     {

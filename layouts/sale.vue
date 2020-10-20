@@ -62,12 +62,12 @@ html {
   margin: 10px auto;
   background: #fff;
   border-radius: 6px;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .tfs-i18n-container {
   padding: 0.5rem;
-  background: rgba(45, 140, 240, 0.2);
+  background: #ec2529;
   border-radius: 6px 6px 0 0;
 }
 
@@ -96,7 +96,7 @@ html {
   margin-right: 10px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1080px) {
   .tfs-sale-main-content {
     margin: 20px 10px;
   }
@@ -106,7 +106,7 @@ html {
     padding: 0;
   }
 
-  .hidden-sm {
+  .hidden-sm-sale {
     display: none;
   }
 
@@ -124,9 +124,13 @@ html {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1080px) {
   .tfs-sale-inner-layout {
     width: 90% !important;
+  }
+
+  .step-container {
+    text-align: center;
   }
 
   .vueperslide, .vueperslide__image {
@@ -147,11 +151,11 @@ html {
     margin: 20px 50px;
   }
 
-  .hidden-md {
+  .hidden-md-sale {
     display: none !important;
   }
 
-  .hidden-sm {
+  .hidden-sm-sale {
     display: block;
   }
 
