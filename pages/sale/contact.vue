@@ -121,7 +121,7 @@ export default {
       this.jpgDownloadUrl = url;
       this.$Modal.success({
         title: '成功提交请求',
-        content: `<a class="ivu-btn ivu-btn-success" :href="jpgDownloadUrl" style="font-size: 16px;">
+        content: `<a class="ivu-btn ivu-btn-success" :href="url" style="font-size: 16px;">
                     点击此处下载您的需求并发送给客服
                   </a>`
       });
