@@ -15,13 +15,20 @@
                   <img :src="template.showcase" alt="" style="width: 100%" />
                 </a>
                 <Divider dashed />
-                <Button size="large" type="success" long v-on:click="preview(template.title)">预览</Button>
+                <Row :gutter="16" style="margin-top: 0;">
+                  <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-top: 5px;">
+                    <Button size="large" type="info" long v-on:click="preview(template.title)">预览</Button>
+                  </Col>
+                  <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-top: 5px;">
+                    <Button size="large" type="success" v-on:click="chooseTemplate(template.title)" long>我要这个主题</Button>
+                  </Col>
+                </Row>
               </div>
             </Card>
           </Col>
         </Row>
       </div>
-      <div v-if="showPreview">
+      <div v-if="false">
         <Tabs type="card" closable @on-tab-remove="handleTabRemove">
           <TabPane v-for="preview in previewTemplates" :label="preview.title">
             <TemplatePreview :template="preview" />
@@ -69,7 +76,6 @@ export default {
     };
   },
   mounted() {
-    console.log()
     const exists = this.previewTemplates.filter(template => {
       return template.title === this.selectedTemplate.title;
     });
@@ -84,21 +90,24 @@ export default {
       e.preventDefault();
     },
     preview(theme) {
-      const selected = this.allTemplate.filter(template => {
-        return template.title === theme;
-      })[0];
-      const exists = this.previewTemplates.filter(template => {
-        return template.title === theme;
-      });
-      if (exists && exists.length > 0) {
-        this.previewTemplates.reverse();
-      } else {
-        this.previewTemplates.push(selected);
-        this.previewTemplates.reverse();
-      }
-      this.showPreview = true;
-      this.showAllTemplate = false;
-      this.showSelected = false;
+      // const selected = this.allTemplate.filter(template => {
+      //   return template.title === theme;
+      // })[0];
+      // const exists = this.previewTemplates.filter(template => {
+      //   return template.title === theme;
+      // });
+      // if (exists && exists.length > 0) {
+      //   this.previewTemplates.reverse();
+      // } else {
+      //   this.previewTemplates.push(selected);
+      //   this.previewTemplates.reverse();
+      // }
+      // this.showPreview = true;
+      // this.showAllTemplate = false;
+      // this.showSelected = false;
+      const path = this.localePath({ path: '/sale/preview', query: { template: theme } });
+      window.open(path, '_blank');
+      // this.$router.push(localUrl);
     },
     chooseTemplate(template) {
       this.setTemplate(template);

@@ -2,7 +2,87 @@
   <article class="tfs-article-sale">
     <Row class="tfs-sale-main-content">
       <div class="step-container" style="text-align: left;">
-        <Card :bordered="true" style="margin-bottom: 10px">
+        <Card :bordered="false">
+          <p slot="title">我们的联系方式</p>
+          <Row :gutter="gutter" style="margin-top: 10px">
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/online-service.png" alt="">
+                  <h3 style="margin-bottom: 15px;">在线客服</h3>
+                </div>
+              </Card>
+            </Col>
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/001-skype.png" alt="">
+                  <h3 style="margin-bottom: 15px;">Skype</h3>
+                  <p class="tfs-text-red">sales@tc-gaming.com</p>
+                </div>
+              </Card>
+            </Col>
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/002-telegram.png" alt="">
+                  <h3 style="margin-bottom: 15px;">Telegram</h3>
+                  <p class="tfs-text-red">@TCGaming</p>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          <Row :gutter="gutter" style="margin-top: 10px">
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/003-phone-call.png" alt="">
+                  <h3 style="margin-bottom: 15px;">电话号码</h3>
+                  <p class="tfs-text-red">+63 917 186 1111</p>
+                </div>
+              </Card>
+            </Col>
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/wechat.png" alt="">
+                  <h3 style="margin-bottom: 15px;">微信</h3>
+                  <p class="tfs-text-red">tcgaming</p>
+                </div>
+              </Card>
+            </Col>
+            <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/qq.png" alt="">
+                  <h3 style="margin-bottom: 15px;">QQ在线咨询</h3>
+                  <p class="tfs-text-red">778011</p>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          <Row :gutter="gutter" style="margin-top: 10px">
+            <Col :xs="24" :sm="24" :md="12" :lg="12" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/whatsapp.png" alt="">
+                  <h3 style="margin-bottom: 15px;">WhatsApp</h3>
+                  <p class="tfs-text-red">+63 917 186 1111</p>
+                </div>
+              </Card>
+            </Col>
+            <Col :xs="24" :sm="24" :md="12" :lg="12" style="margin-bottom: 10px;">
+              <Card style="height: 150px;">
+                <div style="text-align:center">
+                  <img src="~assets/email.png" alt="">
+                  <h3 style="margin-bottom: 15px;">邮箱</h3>
+                  <p class="tfs-text-red">sales@tc-gaming.com</p>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+        <Card :bordered="true" style="margin-top: 10px">
           <p slot="title">您的需求如下:</p>
           <div class="tfs-preview-request">
             <Form :label-width="100">
@@ -17,22 +97,6 @@
               </FormItem>
               <FormItem label="网站模板:">
                 <Input :value="selectTemplate.title" readonly></Input>
-              </FormItem>
-            </Form>
-          </div>
-        </Card>
-        <Card :bordered="false">
-          <p slot="title">填写联系资料</p>
-          <div>
-            <Form :model="request" :label-width="100">
-              <FormItem label="邮箱:">
-                <Input v-model="request.email" placeholder="请输入您的邮箱地址"></Input>
-              </FormItem>
-              <FormItem label="电话:">
-                <Input v-model="request.phone" placeholder="请输入您的手机号码"></Input>
-              </FormItem>
-              <FormItem label="其他需求:">
-                <Input v-model="request.otherRequest" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入您的其他特殊要求"></Input>
               </FormItem>
               <FormItem>
                 <Button type="success" @click="submit" :loading="loading" style="margin-top: 10px;">提交资料</Button>
@@ -69,13 +133,8 @@ export default {
       downloadModal: false,
       loading: false,
       single: false,
-      currentStep: 0,
-      jpgDownloadUrl: '',
-      request: {
-        email: '',
-        phone: '',
-        otherRequest: ''
-      }
+      gutter: 16,
+      jpgDownloadUrl: ''
     };
   },
   methods: {
@@ -108,10 +167,7 @@ export default {
         texts: [
           `面向市场:  ${this.selectedMarket}`,
           `主推产品:  ${this.selectedProduct}`,
-          `主题颜色:  ${this.selectedTheme}`,
-          `邮箱:  ${this.request.email}`,
-          `电话:  ${this.request.phone}`,
-          `其他需求:  ${this.request.otherRequest}`,
+          `主题颜色:  ${this.selectedTheme}`
         ],
       });
       const { url } = data;
@@ -131,9 +187,6 @@ export default {
       const localUrl = this.localePath('sale');
       this.$router.push(localUrl);
     },
-  },
-  mounted() {
-    // console.log(this.selectedMarket);
   },
 };
 </script>
@@ -166,5 +219,9 @@ export default {
   height: 100px;
   position: relative;
   border: 1px solid #eee;
+}
+
+.tfs-text-red {
+  color: #ec2529;
 }
 </style>
