@@ -2,7 +2,27 @@
   <article class="tfs-article-sale">
     <Row class="tfs-sale-main-content">
       <div class="step-container" style="text-align: left;">
-        <Card :bordered="false">
+        <Card :bordered="true">
+          <p slot="title">您的需求如下:</p>
+          <div class="tfs-preview-request">
+            <Form :label-width="100">
+              <FormItem label="用户面向市场:">
+                <Input :value="selectedMarket" readonly></Input>
+              </FormItem>
+              <FormItem label="主推产品:">
+                <Input :value="selectedProduct" readonly></Input>
+              </FormItem>
+              <FormItem label="网站模板:">
+                <Input :value="selectTemplate.title" readonly></Input>
+              </FormItem>
+              <FormItem>
+                <Button type="success" @click="submit" :loading="loading" style="margin-top: 10px;">完成</Button>
+                <Button @click="goBack" :loading="loading" style="margin-top: 10px;">我要重选</Button>
+              </FormItem>
+            </Form>
+          </div>
+        </Card>
+        <Card :bordered="false" v-if="false">
           <p slot="title">我们的联系方式</p>
           <Row :gutter="gutter" style="margin-top: 10px">
             <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-bottom: 10px;">
@@ -82,28 +102,9 @@
             </Col>
           </Row>
         </Card>
-        <Card :bordered="true" style="margin-top: 10px">
-          <p slot="title">您的需求如下:</p>
-          <div class="tfs-preview-request">
-            <Form :label-width="100">
-              <FormItem label="用户面向市场:">
-                <Input :value="selectedMarket" readonly></Input>
-              </FormItem>
-              <FormItem label="主推产品:">
-                <Input :value="selectedProduct" readonly></Input>
-              </FormItem>
-              <FormItem label="主题色系:">
-                <Input :value="selectedTheme" readonly></Input>
-              </FormItem>
-              <FormItem label="网站模板:">
-                <Input :value="selectTemplate.title" readonly></Input>
-              </FormItem>
-              <FormItem>
-                <Button type="success" @click="submit" :loading="loading" style="margin-top: 10px;">提交资料</Button>
-                <Button @click="goBack" :loading="loading" style="margin-top: 10px;">我要重选</Button>
-              </FormItem>
-            </Form>
-          </div>
+        <Card :bordered="false" style="margin-top: 10px">
+          <p slot="title">我们的联系方式</p>
+          <Button size="large" type="info" @click="openNewWin" style="margin-top: 10px;width: 100%;height: 45px;">联系销售</Button>
         </Card>
       </div>
     </Row>
@@ -138,6 +139,9 @@ export default {
     };
   },
   methods: {
+    openNewWin() {
+      window.open('https://www.tc-gaming.com/about-us/talk-to-us/', '_blank');
+    },
     showSpin() {
       this.$Spin.show({
         render: (h) => {
@@ -167,7 +171,7 @@ export default {
         texts: [
           `面向市场:  ${this.selectedMarket}`,
           `主推产品:  ${this.selectedProduct}`,
-          `主题颜色:  ${this.selectedTheme}`
+          `模板:  ${this.selectTemplate.title}`
         ],
       });
       const { url } = data;
@@ -176,9 +180,9 @@ export default {
       this.downloadModal = true;
       this.jpgDownloadUrl = url;
       this.$Modal.success({
-        title: '成功提交请求',
+        title: '请下载后联系销售',
         content: `<a class="ivu-btn ivu-btn-success" href=${url} style="font-size: 16px;">
-                    点击此处下载您的需求并发送给客服
+                    下载
                   </a>`
       });
     },

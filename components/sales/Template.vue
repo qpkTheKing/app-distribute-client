@@ -16,8 +16,15 @@
                 </a>
                 <Divider dashed />
                 <Row :gutter="16" style="margin-top: 0;">
-                  <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-top: 5px;">
-                    <Button size="large" type="info" long v-on:click="preview(template.title)">预览</Button>
+                  <Col :xs="24" :sm="24" :md="24" :lg="24">
+                    <Row :gutter="16">
+                      <Col :xs="24" :sm="24" :md="24" :lg="24">
+                        <Button size="large" type="info" long v-on:click="preview(template.title, 'mobile')">移动端预览</Button>
+                      </Col>
+                      <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-top: 5px;">
+                        <Button size="large" type="info" long v-on:click="preview(template.title, 'pc')">桌面端预览</Button>
+                      </Col>
+                    </Row>
                   </Col>
                   <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-top: 5px;">
                     <Button size="large" type="success" v-on:click="chooseTemplate(template.title)" long>我要这个主题</Button>
@@ -89,7 +96,7 @@ export default {
     enlarge(e) {
       e.preventDefault();
     },
-    preview(theme) {
+    preview(theme, device) {
       // const selected = this.allTemplate.filter(template => {
       //   return template.title === theme;
       // })[0];
@@ -105,7 +112,7 @@ export default {
       // this.showPreview = true;
       // this.showAllTemplate = false;
       // this.showSelected = false;
-      const path = this.localePath({ path: '/sale/preview', query: { template: theme } });
+      const path = this.localePath({ path: '/sale/preview', query: { template: theme, type: device } });
       window.open(path, '_blank');
       // this.$router.push(localUrl);
     },

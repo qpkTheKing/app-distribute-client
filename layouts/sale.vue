@@ -91,9 +91,14 @@ html {
   display: block;
   height: 60px;
 }
+
 .ivu-radio {
   bottom: 20px;
   margin-right: 10px;
+}
+
+.step-container {
+  text-align: center;
 }
 
 @media (max-width: 1080px) {
@@ -127,10 +132,6 @@ html {
 @media (min-width: 1080px) {
   .tfs-sale-inner-layout {
     width: 90% !important;
-  }
-
-  .step-container {
-    text-align: center;
   }
 
   .vueperslide, .vueperslide__image {

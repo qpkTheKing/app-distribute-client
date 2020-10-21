@@ -27,12 +27,9 @@
         <ProductComponent :title="steps[currentStep].title" />
       </Col>
       <Col span="24" v-if="currentStep === 2">
-        <ThemeComponent :title="steps[currentStep].title" />
-      </Col>
-      <Col span="24" v-if="currentStep === 3">
         <TemplateComponent :title="steps[currentStep].title" />
       </Col>
-      <Col span="24" v-if="currentStep === 4">
+      <Col span="24" v-if="currentStep === 3">
         <ConfirmTemplate :title="steps[currentStep].title" :jpgDownloadUrl="jpgDownloadUrl"></ConfirmTemplate>
       </Col>
     </Row>
@@ -45,7 +42,7 @@
       </Col>
       <Col span="12" style="text-align: right;">
         <Button type="primary" @click="nextStep" v-if="currentStep !== steps.length - 1">下一步</Button>
-        <Button type="success" @click="submit" :loading="loading" v-else>提交需求</Button>
+        <Button type="success" @click="submit" :loading="loading" v-else>下一步</Button>
       </Col>
     </Row>
     <Modal

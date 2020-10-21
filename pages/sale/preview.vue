@@ -2,7 +2,7 @@
   <article class="tfs-article-sale">
     <Row class="tfs-sale-main-content">
       <div style="text-align: left;" v-if="template !== undefined">
-        <TemplatePreview :template="template" />
+        <TemplatePreview :template="template" :type="device"/>
         <Row :gutter="16" style="margin-top: 5px;" v-if="false">
           <Col :xs="24" :sm="24" :md="12" :lg="12" style="margin-top: 5px;">
             <Button size="large" type="info" v-on:click="goBack" long>返回预览</Button>
@@ -25,7 +25,8 @@ export default {
   async asyncData(ctx) {
     const { query } = ctx;
     return {
-      templateTitle: query.template
+      templateTitle: query.template,
+      device: query.type
     };
   },
   components: {
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       templateTitle: '',
+      device: '',
       template: undefined
     };
   },

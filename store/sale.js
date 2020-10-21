@@ -15,11 +15,6 @@ export const state = () => ({
       key: 'selectedProduct'
     },
     {
-      title: '主题色系',
-      content: '请至少选择一项',
-      key: 'selectedTheme'
-    },
-    {
       title: '网站模板',
       content: '手机端和PC端',
       key: 'selected'

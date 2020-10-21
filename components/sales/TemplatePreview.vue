@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div v-if="!type">
     <Tabs type="card">
       <TabPane label="网页端">
         <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
           <vueper-slide v-for="(desktopImg, i) in template.images.desktop" :key="`${template.title}-desktop-${template.showcase}-${i}`">
             <template v-slot:content>
-              <img :src="desktopImg" alt="" style="width:100%; height:100%;"/>
+              <div class="tfs-image-container">
+                <img :src="desktopImg" alt=""/>
+              </div>
             </template>
           </vueper-slide>
         </vueper-slides>
@@ -14,12 +16,50 @@
         <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
           <vueper-slide v-for="(mobileImg, i) in template.images.mobile" :key="`${template.title}-desktop-${template.showcase}-${i}`">
             <template v-slot:content>
-              <img :src="mobileImg" alt="" class="resp-image"/>
+              <div class="tfs-image-container">
+                <img :src="mobileImg" alt="" class="mobile"/>
+              </div>
             </template>
           </vueper-slide>
         </vueper-slides>
       </TabPane>
     </Tabs>
+  </div>
+  <div v-else>
+    <div v-if="type === 'mobile'">
+      <Tabs type="card">
+        <TabPane label="移动端">
+          <div class="tfs-image-container">
+            <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
+              <vueper-slide v-for="(mobileImg, i) in template.images.mobile" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+                <template v-slot:content>
+                  <div class="tfs-image-container">
+                    <img :src="mobileImg" alt="" class="mobile"/>
+                  </div>
+                </template>
+              </vueper-slide>
+            </vueper-slides>
+          </div>
+        </TabPane>
+      </Tabs>
+    </div>
+    <div v-if="type === 'pc'">
+      <Tabs type="card">
+        <TabPane label="桌面端">
+          <div class="tfs-image-container">
+            <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
+              <vueper-slide v-for="(desktopImg, i) in template.images.desktop" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+                <template v-slot:content>
+                  <div class="tfs-image-container">
+                    <img :src="desktopImg" alt=""/>
+                  </div>
+                </template>
+              </vueper-slide>
+            </vueper-slides>
+          </div>
+        </TabPane>
+      </Tabs>
+    </div>
   </div>
 </template>
 
@@ -29,7 +69,7 @@ import 'vueperslides/dist/vueperslides.css';
 
 export default {
   components: { VueperSlides, VueperSlide },
-  props: ['template'],
+  props: ['template', 'type'],
   data() {
     return {};
   },
@@ -38,5 +78,25 @@ export default {
 </script>
 
 <style>
+
+.tfs-image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.tfs-image-container > img {
+  position: absolute;
+  width: 100% !important;
+  max-width: 1000px;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tfs-image-container > img.mobile {
+  max-width: 285px;
+}
 
 </style>
