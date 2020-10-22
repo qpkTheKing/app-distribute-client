@@ -113,7 +113,7 @@
 
 <script>
 import ConfirmTemplate from '@/components/sales/ConfirmTemplate';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   layout: 'sale',
@@ -189,8 +189,12 @@ export default {
     goBack() {
       // const url = `${this.$config.client}${this.localePath({ name: 'contact' })}`;
       const localUrl = this.localePath('sale');
+      this.setTemplate('');
       this.$router.push(localUrl);
     },
+    ...mapMutations({
+      setTemplate: 'sale/setTemplate'
+    })
   },
 };
 </script>

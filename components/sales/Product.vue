@@ -4,15 +4,15 @@
       <p slot="title">{{ title }}</p>
       <div>
         <RadioGroup v-model="selected" size="large" @on-change="save" vertical>
-          <Radio label="传统彩票">
+          <Radio label="LOTT">
             <img src="~assets/casio/050-gambling.png" alt="" />
             <span class="c-text">传统彩票</span>
           </Radio>
-          <Radio label="盘口彩">
+          <Radio label="ELOTT">
             <img src="~assets/casio/028-billiards.png" alt="" />
             <span class="c-text">盘口彩</span>
           </Radio>
-          <Radio label="娱乐城">
+          <Radio label="ENT">
             <img src="~assets/casio/021-slot-machine-1.png" alt="" />
             <span class="c-text">娱乐城</span>
           </Radio>

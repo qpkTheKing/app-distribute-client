@@ -32,16 +32,11 @@ export default {
   components: {
     TemplatePreview
   },
-  computed: {
-    ...mapGetters({
-      allTemplate: 'sale/getAllTemplates',
-      selectTemplate: 'sale/getTemplate'
-    })
-  },
   mounted() {
-    this.template = this.allTemplate.filter(template => {
-      return template.title === this.templateTitle.toUpperCase();
-    })[0];
+    const allTemplates = JSON.parse(window.sessionStorage.getItem('TEMPLATES'));
+    this.template = allTemplates[this.templateTitle].filter(template => {
+      return template.platform === this.device;
+    });
   },
   data() {
     return {

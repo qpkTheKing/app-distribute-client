@@ -3,10 +3,10 @@
     <Tabs type="card">
       <TabPane label="网页端">
         <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-          <vueper-slide v-for="(desktopImg, i) in template.images.desktop" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+          <vueper-slide v-for="img in template" :key="`${img.id}`" v-if="img.platform === 'W'">
             <template v-slot:content>
               <div class="tfs-image-container">
-                <img :src="desktopImg" alt=""/>
+                <img :src="img.image" alt=""/>
               </div>
             </template>
           </vueper-slide>
@@ -14,10 +14,10 @@
       </TabPane>
       <TabPane label="手机端">
         <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-          <vueper-slide v-for="(mobileImg, i) in template.images.mobile" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+          <vueper-slide v-for="img in template" :key="`${img.id}`" v-if="img.platform === 'M'">
             <template v-slot:content>
               <div class="tfs-image-container">
-                <img :src="mobileImg" alt="" class="mobile"/>
+                <img :src="img.image" alt="" class="mobile"/>
               </div>
             </template>
           </vueper-slide>
@@ -26,15 +26,15 @@
     </Tabs>
   </div>
   <div v-else>
-    <div v-if="type === 'mobile'">
+    <div v-if="type === 'M'">
       <Tabs type="card">
         <TabPane label="移动端">
           <div class="tfs-image-container">
             <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-              <vueper-slide v-for="(mobileImg, i) in template.images.mobile" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+              <vueper-slide v-for="img in template" :key="`${img.id}`">
                 <template v-slot:content>
                   <div class="tfs-image-container">
-                    <img :src="mobileImg" alt="" class="mobile"/>
+                    <img :src="img.image" alt="" class="mobile"/>
                   </div>
                 </template>
               </vueper-slide>
@@ -43,15 +43,15 @@
         </TabPane>
       </Tabs>
     </div>
-    <div v-if="type === 'pc'">
+    <div v-if="type === 'W'">
       <Tabs type="card">
         <TabPane label="桌面端">
           <div class="tfs-image-container">
             <vueper-slides lazy lazy-load-on-drag fixedHeight="500px">
-              <vueper-slide v-for="(desktopImg, i) in template.images.desktop" :key="`${template.title}-desktop-${template.showcase}-${i}`">
+              <vueper-slide v-for="img in template" :key="`${img.id}`">
                 <template v-slot:content>
                   <div class="tfs-image-container">
-                    <img :src="desktopImg" alt=""/>
+                    <img :src="img.image" alt=""/>
                   </div>
                 </template>
               </vueper-slide>

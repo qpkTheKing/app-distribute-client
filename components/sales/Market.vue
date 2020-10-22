@@ -4,19 +4,19 @@
       <p slot="title">{{ title }}</p>
       <div>
         <RadioGroup v-model="selected" size="large" @on-change="save" vertical>
-          <Radio label="中国">
+          <Radio label="CN">
             <img src="~assets/CN.png" alt="" />
             <span class="c-text">中国</span>
           </Radio>
-          <Radio label="泰国">
+          <Radio label="TH">
             <img src="~assets/TH.png" alt="" />
             <span class="c-text">泰国</span>
           </Radio>
-          <Radio label="越南">
+          <Radio label="VN">
             <img src="~assets/VI.png" alt="" />
             <span class="c-text">越南</span>
           </Radio>
-          <Radio label="缅甸">
+          <Radio label="MY">
             <img src="~assets/MY.png" alt="" />
             <span class="c-text">缅甸</span>
           </Radio>

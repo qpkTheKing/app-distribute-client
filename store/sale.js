@@ -1,5 +1,8 @@
+import _throttle from 'lodash/throttle';
+import _groupBy from 'lodash/groupBy';
+
 export const state = () => ({
-  selected: 'FRESH',
+  selected: '',
   selectedMarket: '',
   selectedProduct: '',
   selectedTheme: '',
@@ -20,38 +23,53 @@ export const state = () => ({
       key: 'selected'
     }
   ],
-  templates: [
-    {
-      title: 'FRESH',
-      showcase: 'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/MOBILE/FRESH/01.jpg',
-      images: {
-        desktop: [
-          'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/WEB/TEST2/01.jpg',
-          'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/WEB/TEST1/01.jpg'
-        ],
-        mobile: [
-          'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/MOBILE/AUBO/01.jpg'
-        ]
-      }
-    },
-    {
-      title: 'GOLD',
-      showcase: 'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/MOBILE/GOLD/01.jpg',
-      images: {
-        desktop: [
-          'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/WEB/TEST1/01.jpg'
-        ],
-        mobile: [
-          'https://images.b298100.com:42666/TCG_PROD_IMAGES/TEMPLATE/MOBILE/GOLD/01.jpg'
-        ]
-      }
-    }
-  ]
+  mobileTemplates: [],
+  webTemplates: [],
+  templates: {},
 });
 
 export const mutations = {
   setTemplate(state, newTemplate) {
     state.selected = newTemplate;
+  },
+  setMobileTemplates(state, template) {
+    state.mobileTemplates = template;
+  },
+  setWebTemplates(state, template) {
+    state.webTemplates = template;
+  },
+  setTemplates(state, { country, product }) {
+    const webTemplates = state.webTemplates.map(template => {
+      template.platform = 'W';
+      return template;
+    });
+    const mobileTemplates = state.mobileTemplates.map(template => {
+      template.platform = 'M'
+      return template;
+    });
+    const allTemplates = webTemplates.concat(mobileTemplates);
+    const patternGroupName = /(CN|TH|VN)_(LOTT|ELOTT|ENT)/;
+    const neededTemplates = allTemplates.filter(template => template.groupName !== undefined && template.groupName !== null && patternGroupName.test(template.groupName));
+    const formatted = neededTemplates.map(template => {
+      const { bannerId, title, url, groupName, platform } = template;
+      const category = groupName.split('_');
+      const country = category[0];
+      const product = category[1];
+      const setNumber = category[2];
+      return {
+        id: bannerId,
+        group: `${country}_${product}`,
+        platform,
+        country,
+        product,
+        setNumber: `${country}_${product}_${setNumber}`,
+        title,
+        image: url,
+      };
+    });
+    const grouped = _groupBy(formatted, 'group');
+    state.templates = _groupBy(grouped[`${country}_${product}`], 'setNumber');
+    window.sessionStorage.setItem('TEMPLATES', JSON.stringify(state.templates));
   },
   setMarket(state, newMarket) {
     state.selectedMarket = newMarket;
@@ -64,10 +82,44 @@ export const mutations = {
   }
 };
 
+export const actions = {
+  async getTemplates({ commit }, platform) {
+    const url = `https://www.qpkdemo.com/wps/relay/MCSFE_getListAnnouncements?types=B&merchantCode=qpkdemo&platform=${platform}&token=`;
+    const { value } = await this.$axios.$get(url, {
+      headers: {
+        'Authorization': '',
+        'Merchant': 'qpkdemo'
+      }
+    });
+    const { banners } = value;
+
+    if (platform === 'W') {
+      commit('setWebTemplates', banners);
+      window.sessionStorage.setItem('WEB-TEMPLATES', JSON.stringify(banners));
+    }
+    if (platform === 'M') {
+      commit('setMobileTemplates', banners);
+      window.sessionStorage.setItem('MOBILE-TEMPLATES', JSON.stringify(banners));
+    }
+  },
+  _throttleGetTemplates: _throttle(({ commit, dispatch }, platform) => {
+    dispatch('getTemplates', platform);
+  }, 2000)
+};
+
 export const getters = {
+  getMobileTemplates(state) {
+    return state.mobileTemplates;
+  },
+  getWebTemplates(state) {
+    return state.webTemplates
+  },
   getTemplate(state) {
-    const { selected } = state;
-    return state.templates.filter((template) => template.title === selected)[0];
+    const template = state.templates;
+    return {
+      title: state.selected,
+      template: template[state.selected]
+    };
   },
   getAllTemplates(state) {
     return state.templates;
