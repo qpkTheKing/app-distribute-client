@@ -159,32 +159,45 @@ export default {
       });
     },
     async submit() {
-      const { images } = this.selectTemplate;
-      const { desktop, mobile } = images;
-      this.loading = true;
-      this.showSpin();
-      const { data } = await this.$axios.$post('images/sale', {
-        images: {
-          pc: desktop[0],
-          mobile: mobile[0]
-        },
-        texts: [
-          `面向市场:  ${this.selectedMarket}`,
-          `主推产品:  ${this.selectedProduct}`,
-          `模板:  ${this.selectTemplate.title}`
-        ],
-      });
-      const { url } = data;
-      this.loading = false;
-      this.$Spin.hide();
-      this.downloadModal = true;
-      this.jpgDownloadUrl = url;
-      this.$Modal.success({
-        title: '请下载后联系销售',
-        content: `<a class="ivu-btn ivu-btn-success" href=${url} style="font-size: 16px;">
+      const { template, title } = this.selectTemplate;
+      const pc = template.filter(tmp => tmp.platform === "W");
+      const mobile = template.filter(tmp => tmp.platform === "M");
+
+      if (pc && pc.length === 0) {
+        this.$Message.error('请补充网页端的预览图片.');
+      }
+
+      if (mobile && mobile.length === 0) {
+        this.$Message.error('请补充移动端的预览图片.');
+      }
+
+      if ((pc && pc.length > 0) && (mobile && mobile.length > 0)) {
+        this.loading = true;
+        this.showSpin();
+        const { data } = await this.$axios.$post('images/sale', {
+          images: {
+            pc: pc && pc.length > 0 ? pc[0]['image'] : '',
+            mobile: mobile && mobile.length > 0 ? mobile[0]['image'] : ''
+          },
+          texts: [
+            `面向市场:  ${this.selectedMarket}`,
+            `主推产品:  ${this.selectedProduct}`,
+            `模板:  ${title}`
+          ],
+        });
+        const { url } = data;
+        this.loading = false;
+        this.$Spin.hide();
+        this.downloadModal = true;
+        this.jpgDownloadUrl = url;
+        this.$Modal.success({
+          title: '请下载后联系销售',
+          content: `<a class="ivu-btn ivu-btn-success" href=${url} style="font-size: 16px;">
                     下载
                   </a>`
-      });
+        });
+      }
+
     },
     goBack() {
       // const url = `${this.$config.client}${this.localePath({ name: 'contact' })}`;
