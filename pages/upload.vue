@@ -490,7 +490,7 @@ export default {
       let startTime, endTime;
       let ctx = this;
       uploader = new tus.Upload(file, {
-        endpoint: this.$config.downloadServer,
+        endpoint: this.$config.uploaderServer,
         chunkSize: 5 * 100 * 1024,
         overridePatchMethod: true,
         removeFingerprintOnSuccess: true,
