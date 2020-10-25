@@ -11,7 +11,7 @@ export default {
     // client: 'http://192.168.254.116',
     client: 'http://198.13.52.160',
     // downloadServer: 'http://localhost:1080/files',
-    downloadServer: 'http://198.13.52.160:1080/files',
+    downloadServer: 'http://198.13.52.160:4000/files',
     socketServer: 'http://198.13.52.160:4000'
   },
   privateRuntimeConfig: {},
