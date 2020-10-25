@@ -409,7 +409,7 @@ export default {
             fType: 'apk',
             appId: this.appId,
             appDescription: this.appDescription,
-            downloadUrl: `${this.$config.downloadServer}/${this.formData.fileFingerPrint}`,
+            downloadUrl: `${this.$config.downloadServer}/${this.formData.fileFingerPrint}-${this.formData.fileName}`,
             forDownload: this.forDownloadSubmit,
           };
           await this.$axios.$post('app/file', {
@@ -524,7 +524,7 @@ export default {
           const { pathname } = fileUrl;
           const defaultPlatform = ctx.fileType ? ctx.fileType : ctx.platform;
           ctx.fileUploaded = true;
-          ctx.formData.fileFingerPrint = pathname.split('/')[2];
+          ctx.formData.fileFingerPrint = pathname.split('/')[3];
           ctx.formData.fileName = uploader.file.name;
           ctx.formData.fileSize = ctx._formatBytes(uploader.file.size);
           ctx.loading = true;
