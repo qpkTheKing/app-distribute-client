@@ -10,9 +10,6 @@ export default {
     port: 80, // default: 3000
     host: '0.0.0.0', // default: localhost
     https: {
-      port: 443, // default: 3000
-      host: '0.0.0.0', // default: localhost
-      rejectUnauthorized: false,
       key: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_key.key')),
       cert: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_chain.crt'))
     }
