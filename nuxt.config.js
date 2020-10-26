@@ -7,9 +7,11 @@ export default {
     height: '5px'
   },
   server: {
-    // port: 80, // default: 3000
-    // host: '0.0.0.0' // default: localhost
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost
     https: {
+      port: 443, // default: 3000
+      host: '0.0.0.0', // default: localhost
       key: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_key.key')),
       cert: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_chain.crt'))
     }
