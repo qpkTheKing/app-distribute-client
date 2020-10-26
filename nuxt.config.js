@@ -7,9 +7,10 @@ export default {
     height: '5px'
   },
   server: {
-    port: 3000, // default: 3000
+    port: 80, // default: 3000
     host: '0.0.0.0', // default: localhost
     https: {
+      rejectUnauthorized: false,
       port: 443, // default: 3000
       host: '0.0.0.0', // default: localhost
       key: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_key.key')),
@@ -152,7 +153,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://207.148.77.173:4000/user'
+    baseURL: 'https://appdistribute.info:4000/user'
     // baseURL: 'http://localhost:4000/user'
   },
   /*
