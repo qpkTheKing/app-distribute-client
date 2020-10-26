@@ -1,19 +1,26 @@
+import path from 'path'
+import fs from 'fs'
+
 export default {
   loading: {
     color: 'white',
     height: '5px'
   },
   server: {
-    port: 80, // default: 3000
-    host: '0.0.0.0' // default: localhost
+    // port: 80, // default: 3000
+    // host: '0.0.0.0' // default: localhost
+    https: {
+      key: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_key.key')),
+      cert: fs.readFileSync(path.resolve(process.cwd(), 'appdistribute.info_chain.crt'))
+    }
   },
   publicRuntimeConfig: {
     // client: 'http://192.168.254.116',
-    client: 'http://198.13.52.160',
+    client: 'http://207.148.77.173',
     // downloadServer: 'http://localhost:4000/files',
-    downloadServer: 'http://198.13.52.160:4000',
-    uploaderServer: 'http://198.13.52.160:4000/uploads',
-    socketServer: 'http://198.13.52.160:4000'
+    downloadServer: 'http://207.148.77.173:4000',
+    uploaderServer: 'http://207.148.77.173:4000/uploads',
+    socketServer: 'http://207.148.77.173:4000'
   },
   privateRuntimeConfig: {},
   /*
@@ -143,7 +150,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://198.13.52.160:4000/user'
+    baseURL: 'http://207.148.77.173:4000/user'
     // baseURL: 'http://localhost:4000/user'
   },
   /*
