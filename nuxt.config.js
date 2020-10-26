@@ -12,11 +12,11 @@ export default {
   },
   publicRuntimeConfig: {
     // client: 'http://192.168.254.116',
-    client: 'http://207.148.77.173',
+    client: 'https://www.appdistribute.info',
     // downloadServer: 'http://localhost:4000/files',
-    downloadServer: 'http://207.148.77.173:4000',
-    uploaderServer: 'http://207.148.77.173:4000/uploads',
-    socketServer: 'http://207.148.77.173:4000'
+    downloadServer: 'https://appdistribute.info:4000',
+    uploaderServer: 'https://appdistribute.info:4000/uploads',
+    socketServer: 'https://appdistribute.info:4000'
   },
   privateRuntimeConfig: {},
   /*
