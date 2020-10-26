@@ -251,7 +251,7 @@ export default {
             desc: this.$t('APP_DOWNLOAD_TIP'),
           });
           const link = document.createElement('a');
-          link.href = `${this.$config.downloadServer}/${this.current.hashId}`;
+          link.href = `${this.$config.downloadServer}/${this.fileHash}-${this.fileName}`;
           link.download = this.current.fileName;
           link.click();
           this.downloading = false;
