@@ -16,9 +16,6 @@
     <template v-else>
       <div class="tfs-layout-ceiling-main">
         <NuxtLink :to="localePath('login')">{{ $t('LOGIN') }}</NuxtLink>
-        |
-        <NuxtLink :to="localePath('register')">{{ $t('REGISTER') }}</NuxtLink>
-        |
       </div>
     </template>
   </div>
