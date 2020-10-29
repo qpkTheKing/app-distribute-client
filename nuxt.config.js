@@ -146,7 +146,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://appdistribute.info:4000/user'
+    baseURL: 'https://appdistribute.cc:4000/user'
     // baseURL: 'http://localhost:4000/user'
   },
   /*
