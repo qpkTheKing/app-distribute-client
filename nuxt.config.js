@@ -14,8 +14,8 @@ export default {
     // client: 'http://192.168.254.116',
     client: 'https://www.appdistribute.cc',
     // downloadServer: 'http://localhost:4000/files',
-    downloadServer: 'https://appdistribute.info:4000',
-    uploaderServer: 'https://appdistribute.info:4000/uploads',
+    downloadServer: 'https://appdistribute.cc:4000',
+    uploaderServer: 'https://appdistribute.cc:4000/uploads',
     socketServer: 'https://appdistribute.info:4000'
   },
   privateRuntimeConfig: {},
