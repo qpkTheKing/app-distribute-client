@@ -1,6 +1,3 @@
-import path from 'path'
-import fs from 'fs'
-
 export default {
   loading: {
     color: 'white',
@@ -12,10 +9,10 @@ export default {
   },
   publicRuntimeConfig: {
     // client: 'http://192.168.254.116',
-    client: 'https://www.appdistribute.cc',
+    client: 'https://www.appdistribute.info',
     // downloadServer: 'http://localhost:4000/files',
-    downloadServer: 'https://appdistribute.cc:4000',
-    uploaderServer: 'https://appdistribute.cc:4000/uploads',
+    downloadServer: 'https://appdistribute.info:4000',
+    uploaderServer: 'https://appdistribute.info:4000/uploads',
     socketServer: 'https://appdistribute.info:4000'
   },
   privateRuntimeConfig: {},
@@ -146,7 +143,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://appdistribute.cc:4000/user'
+    baseURL: 'https://appdistribute.info:4000/user'
     // baseURL: 'http://localhost:4000/user'
   },
   /*
