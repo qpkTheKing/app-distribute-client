@@ -9,11 +9,11 @@ export default {
   },
   publicRuntimeConfig: {
     // client: 'http://192.168.254.116',
-    client: 'https://www.appdistribute.info',
+    client: 'https://www.appdistribute.cc',
     // downloadServer: 'http://localhost:4000/files',
-    downloadServer: 'https://appdistribute.info:4000',
-    uploaderServer: 'https://appdistribute.info:4000/uploads',
-    socketServer: 'https://appdistribute.info:4000'
+    downloadServer: 'https://appdistribute.cc:4000',
+    uploaderServer: 'https://appdistribute.cc:4000/uploads',
+    socketServer: 'https://appdistribute.cc:4000'
   },
   privateRuntimeConfig: {},
   /*
@@ -143,7 +143,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://appdistribute.info:4000/user'
+    baseURL: 'https://appdistribute.cc:4000/user'
     // baseURL: 'http://localhost:4000/user'
   },
   /*
